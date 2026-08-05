@@ -1,0 +1,94 @@
+/* Shared card grid used by home, /tools, and /learn indexes. */
+.wrap {
+  padding: 28px clamp(14px, 4vw, 48px) 8px;
+}
+.header {
+  max-width: 880px;
+  margin-bottom: 30px;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 12px;
+}
+.h1 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: clamp(32px, 5.5vw, 52px);
+  margin: 0 0 12px;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+}
+.lede {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 58ch;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+  max-width: 1200px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+a.card:hover {
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+.dim {
+  opacity: 0.62;
+}
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.built {
+  color: #1a130e;
+  background: var(--amber);
+}
+.planned {
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+.card h3 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: 19px;
+  margin: 2px 0 0;
+}
+.card p {
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0;
+}

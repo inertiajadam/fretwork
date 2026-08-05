@@ -1,0 +1,46 @@
+.hero {
+  padding: clamp(40px, 8vw, 88px) clamp(14px, 4vw, 48px) 24px;
+  max-width: 940px;
+}
+.heroTitle {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: clamp(38px, 7vw, 68px);
+  margin: 0 0 18px;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+.heroLede {
+  color: var(--muted);
+  font-size: clamp(16px, 2.2vw, 19px);
+  line-height: 1.55;
+  margin: 0 0 28px;
+  max-width: 60ch;
+}
+.heroActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.primaryBtn,
+.secondaryBtn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.primaryBtn {
+  background: var(--amber);
+  color: #1a130e;
+}
+.primaryBtn:hover {
+  filter: brightness(1.06);
+}
+.secondaryBtn {
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.secondaryBtn:hover {
+  border-color: var(--amber);
+}

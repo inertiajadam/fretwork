@@ -1,0 +1,73 @@
+.prose {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 64px) clamp(14px, 4vw, 48px);
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+}
+.prose h1 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: clamp(30px, 5vw, 46px);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 0 0 20px;
+}
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(21px, 3vw, 27px);
+  margin: 36px 0 10px;
+}
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 26px 0 8px;
+}
+.prose p {
+  color: var(--ink);
+  font-size: 16.5px;
+  line-height: 1.66;
+  margin: 0 0 16px;
+}
+.prose ul,
+.prose ol {
+  color: var(--ink);
+  font-size: 16.5px;
+  line-height: 1.66;
+  padding-left: 22px;
+  margin: 0 0 16px;
+}
+.prose li {
+  margin-bottom: 6px;
+}
+.muted {
+  color: var(--muted) !important;
+}
+.prose a {
+  color: var(--amber);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.toolMount {
+  margin: 28px 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.backLink {
+  display: inline-block;
+  margin-top: 40px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
