@@ -44,8 +44,19 @@ vercel --prod
 ## After it is live
 
 - Add a custom domain in the Vercel project settings once you pick the name.
-- `metadataBase` in `app/layout.js` is currently `https://fretwork.app`. Update
-  it to your real domain so Open Graph and canonical URLs are correct.
+- **Canonical / SEO URLs** resolve automatically from Vercel's production domain,
+  so they are correct out of the box. When you attach a custom domain, set an
+  environment variable in the Vercel project settings to pin every canonical,
+  sitemap, and Open Graph URL to it:
+
+  ```
+  NEXT_PUBLIC_SITE_URL = https://your-domain.com
+  ```
+
+  Then redeploy. (Priority: `NEXT_PUBLIC_SITE_URL` > Vercel production domain >
+  localhost. See `lib/seo.js`.)
+- After the site is indexed, submit `https://your-domain.com/sitemap.xml` in
+  Google Search Console.
 
 ## Notes
 

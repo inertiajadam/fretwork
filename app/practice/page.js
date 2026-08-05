@@ -1,9 +1,15 @@
 import styles from "../prose.module.css";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
+
+const DESC =
+  "Routine builder, streaks, and progress tracking are coming with optional free accounts. Nothing here will ever be required.";
 
 export const metadata = {
   title: "Practice",
-  description:
-    "Routine builder, streaks, and progress tracking are coming with optional free accounts. Nothing here will ever be required.",
+  description: DESC,
+  alternates: { canonical: "/practice" },
+  openGraph: buildOpenGraph({ title: "Practice · Fretwork", description: DESC, path: "/practice" }),
+  twitter: buildTwitter({ title: "Practice · Fretwork", description: DESC }),
 };
 
 export default function Practice() {

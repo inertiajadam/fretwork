@@ -1,9 +1,15 @@
 import styles from "../prose.module.css";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
+
+const DESC =
+  "Fretwork is a free, interactive guitar-learning site. Every tool is generated from music theory and math, every lesson is original, and everything is free forever.";
 
 export const metadata = {
   title: "About",
-  description:
-    "Fretwork is a free, interactive guitar-learning site. Every tool is generated from music theory and math, every lesson is original, and everything is free forever.",
+  description: DESC,
+  alternates: { canonical: "/about" },
+  openGraph: buildOpenGraph({ title: "About · Fretwork", description: DESC, path: "/about" }),
+  twitter: buildTwitter({ title: "About · Fretwork", description: DESC }),
 };
 
 export default function About() {

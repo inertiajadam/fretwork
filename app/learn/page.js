@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { LEARN } from "@/lib/site";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import cards from "@/components/Cards.module.css";
+
+const DESC =
+  "Plain-language guitar lessons written around interactive tools: CAGED and the fretboard, chords, theory and Nashville numbers, ear training, and technique.";
 
 export const metadata = {
   title: "Learn",
-  description:
-    "Plain-language guitar lessons written around interactive tools: CAGED and the fretboard, chords, theory and Nashville numbers, ear training, and technique.",
+  description: DESC,
+  alternates: { canonical: "/learn" },
+  openGraph: buildOpenGraph({ title: "Learn · Fretwork", description: DESC, path: "/learn" }),
+  twitter: buildTwitter({ title: "Learn · Fretwork", description: DESC }),
 };
 
 export default function LearnIndex() {

@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { LESSONS, lessonBySlug } from "@/lib/learnContent";
 import { toolBySlug } from "@/lib/site";
 import { getToolComponent } from "@/components/tools/registry";
+import JsonLd from "@/components/JsonLd";
+import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "../../prose.module.css";
 
 export function generateStaticParams() {
@@ -12,9 +15,15 @@ export function generateStaticParams() {
 export function generateMetadata({ params }) {
   const lesson = lessonBySlug(params.slug);
   if (!lesson) return {};
+  const path = `/learn/${params.slug}`;
+  const description = lesson.intro.slice(0, 155);
+  const title = `${lesson.title} · Fretwork`;
   return {
     title: lesson.title,
-    description: lesson.intro.slice(0, 155),
+    description,
+    alternates: { canonical: path },
+    openGraph: buildOpenGraph({ title, description, path, type: "article" }),
+    twitter: buildTwitter({ title, description }),
   };
 }
 
@@ -29,6 +38,14 @@ export default function LessonPage({ params }) {
 
   return (
     <article className={styles.prose}>
+      <JsonLd data={articleSchema(lesson, params.slug)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Learn", path: "/learn" },
+          { name: lesson.title, path: `/learn/${params.slug}` },
+        ])}
+      />
       <div className={styles.eyebrow}>{lesson.eyebrow}</div>
       <h1>{lesson.title}</h1>
       <p>{lesson.intro}</p>

@@ -1,35 +1,66 @@
 import "./globals.css";
 import { SITE_NAME } from "@/lib/site";
+import { SITE_URL } from "@/lib/seo";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 
+const DEFAULT_TITLE = `${SITE_NAME}: free interactive guitar theory tools`;
+const DEFAULT_DESCRIPTION =
+  "Free, interactive guitar tools and plain-language lessons: tuner, CAGED fretboard explorer, chord library, ear trainer, metronome, and more. No paywalls, no account required.";
+
 export const metadata = {
-  metadataBase: new URL("https://fretwork.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME}: free interactive guitar theory tools`,
+    default: DEFAULT_TITLE,
     template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Free, interactive guitar tools and plain-language lessons: tuner, CAGED fretboard explorer, chord library, ear trainer, metronome, and more. No paywalls, no account required.",
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
     "guitar tuner online",
     "CAGED system chart",
     "chord finder",
     "guitar ear trainer",
-    "metronome",
+    "online metronome",
     "circle of fifths",
     "nashville number system",
+    "guitar theory tools",
+    "learn guitar fretboard",
   ],
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  category: "music",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: `${SITE_NAME}: free interactive guitar theory tools`,
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: SITE_URL,
+    title: DEFAULT_TITLE,
     description:
       "Interactive guitar tools and lessons for players who want to understand the neck. Everything free.",
-    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description:
+      "Interactive guitar tools and lessons for players who want to understand the neck. Everything free.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
 export const viewport = {
   themeColor: "#191411",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }) {

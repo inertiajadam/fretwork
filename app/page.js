@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { TOOLS, LEARN } from "@/lib/site";
+import JsonLd from "@/components/JsonLd";
+import { websiteSchema, organizationSchema } from "@/lib/schema";
 import cards from "@/components/Cards.module.css";
 import styles from "./page.module.css";
 
@@ -8,6 +10,8 @@ export default function Home() {
 
   return (
     <div>
+      <JsonLd data={websiteSchema()} />
+      <JsonLd data={organizationSchema()} />
       <section className={styles.hero}>
         <div className={cards.eyebrow}>
           Free forever · {built} interactive tools live
