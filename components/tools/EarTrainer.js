@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import GuidePanel from "@/components/ui/GuidePanel";
+import { newAudioContext, midiToFreq } from "@/lib/audio";
 
 /* ------------------------------------------------------------------ */
 /* Drill data                                                          */
@@ -71,21 +73,20 @@ export default function EarTrainer() {
   const [streak, setStreak] = useState(0);
   const [best, setBest] = useState(0);
   const [score, setScore] = useState({ right: 0, total: 0 });
-  const [showGuide, setShowGuide] = useState(true);
 
   const ctxRef = useRef(null);
   useEffect(() => () => { ctxRef.current?.close().catch(() => {}); }, []);
 
   const getCtx = () => {
     if (!ctxRef.current || ctxRef.current.state === "closed") {
-      ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      ctxRef.current = newAudioContext();
     }
     return ctxRef.current;
   };
 
   /* ------------------------- synthesis ---------------------------- */
   const pluck = (ctx, midi, t, dur = 1.1, vol = 0.28) => {
-    const f = 440 * Math.pow(2, (midi - 69) / 12);
+    const f = midiToFreq(midi);
     const osc = ctx.createOscillator();
     osc.type = "triangle";
     osc.frequency.value = f;
@@ -188,47 +189,23 @@ export default function EarTrainer() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "How does this work?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                Every musical distance has a flavor your ear already knows from
-                a thousand songs; you just haven't attached names yet. That's
-                all ear training is: hear a sound, name it, check, repeat.
-                Attach the names, and suddenly you can find a melody on the
-                neck, name a chord from across the room, and learn songs
-                without a chart.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>The three drills</h3>
-              <p>
-                Intervals is the distance between two notes, the atoms of
-                melody. Chord colors is the mood of a stack: settled or
-                restless, bright or dark. Progressions is the largest unit,
-                recognizing the four-chord stories that power most songs. They
-                build on each other, and each has three levels, so start where
-                it's almost easy.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to practice</h3>
-              <p>
-                Play the sound as many times as you like before answering, and
-                sing it back before you guess: singing forces the ear to commit.
-                Five focused minutes daily beats an hour on Sunday. When a level
-                stops resetting your streak, move up. Wrong answers teach the
-                most, so read the flavor line every time.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="How does this work?"
+        columns={[
+          {
+            title: "The idea",
+            body: "Every musical distance has a flavor your ear already knows from a thousand songs; you just haven't attached names yet. That's all ear training is: hear a sound, name it, check, repeat. Attach the names, and suddenly you can find a melody on the neck, name a chord from across the room, and learn songs without a chart.",
+          },
+          {
+            title: "The three drills",
+            body: "Intervals is the distance between two notes, the atoms of melody. Chord colors is the mood of a stack: settled or restless, bright or dark. Progressions is the largest unit, recognizing the four-chord stories that power most songs. They build on each other, and each has three levels, so start where it's almost easy.",
+          },
+          {
+            title: "How to practice",
+            body: "Play the sound as many times as you like before answering, and sing it back before you guess: singing forces the ear to commit. Five focused minutes daily beats an hour on Sunday. When a level stops resetting your streak, move up. Wrong answers teach the most, so read the flavor line every time.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-row">
@@ -326,13 +303,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 22px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { margin-bottom: 18px; }
 .ctrl-row { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; }

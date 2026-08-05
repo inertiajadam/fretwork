@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { SHARP, FLAT, FLAT_ROOTS, ROOTS, OPEN, INTERVAL, SHAPE_COLORS, SHAPE_ORDER } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -220,7 +221,6 @@ function Diagram({ form, base, rootPc, names }) {
 export default function ChordLibrary() {
   const [rootPc, setRootPc] = useState(7); // G
   const [quality, setQuality] = useState("maj");
-  const [showGuide, setShowGuide] = useState(true);
 
   const names = FLAT_ROOTS.has(rootPc) ? FLAT : SHARP;
   const q = QUALITIES[quality];
@@ -256,47 +256,27 @@ export default function ChordLibrary() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "How do I read these?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>Reading a diagram</h3>
+      <GuidePanel
+        prompt="How do I read these?"
+        columns={[
+          {
+            title: "Reading a diagram",
+            body: (
               <p>
-                Strings run left to right from low E to high e, exactly as if the
-                guitar were standing up in front of you. Dots are where your fingers
-                go. A ringed dot is the root, the note the chord is named after.
-                An × means don't play that string, and a small circle above the nut
-                means play it open. The number on the right ("3fr") tells you which
-                fret the diagram starts on, and a long pill across the strings is a barre.
+                Strings run left to right from low E to high e, exactly as if the guitar were standing up in front of you. Dots are where your fingers go. A ringed dot is the root, the note the chord is named after. An × means don't play that string, and a small circle above the nut means play it open. The number on the right ("3fr") tells you which fret the diagram starts on, and a long pill across the strings is a barre.
               </p>
-            </div>
-            <div className="guide-col">
-              <h3>Why five voicings?</h3>
-              <p>
-                These are the five CAGED forms, the same shapes and colors as the
-                Fretboard Explorer. Every chord lives in all five places, and the
-                cards are sorted by position so you can watch one chord climb the
-                neck. Under each diagram you'll see the actual notes sounded and
-                their role in the chord: R is the root, 3 the third, 5 the fifth,
-                b7 the seventh, and so on.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to use it</h3>
-              <p>
-                Learning a song and hating a chord change? Try the same chord in a
-                different position; a nearer voicing often fixes the change. Playing
-                with another guitarist? Grab a higher form so you're not stacked on
-                the same frets. And if a full shape is a stretch, play just the
-                strings your fingers can reach. Partial voicings are real voicings.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+            ),
+          },
+          {
+            title: "Why five voicings?",
+            body: "These are the five CAGED forms, the same shapes and colors as the Fretboard Explorer. Every chord lives in all five places, and the cards are sorted by position so you can watch one chord climb the neck. Under each diagram you'll see the actual notes sounded and their role in the chord: R is the root, 3 the third, 5 the fifth, b7 the seventh, and so on.",
+          },
+          {
+            title: "How to use it",
+            body: "Learning a song and hating a chord change? Try the same chord in a different position; a nearer voicing often fixes the change. Playing with another guitarist? Grab a higher form so you're not stacked on the same frets. And if a full shape is a stretch, play just the strings your fingers can reach. Partial voicings are real voicings.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-group">
@@ -370,21 +350,6 @@ h1 {
   margin: 0 0 10px; letter-spacing: -0.01em;
 }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 22px; max-width: 1100px; }
-.guide-toggle {
-  background: none; border: none; color: var(--amber); cursor: pointer;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
-  text-transform: uppercase; padding: 0 0 10px; font-weight: 500;
-}
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 14px; padding: 20px 22px;
-}
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
 .ctrl-group { display: flex; flex-direction: column; gap: 7px; }

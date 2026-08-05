@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, useMemo } from "react";
 import { midiName } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
+import { newAudioContext } from "@/lib/audio";
 
 /* ------------------------------------------------------------------ */
 /* Music data. Shared note spelling (noteName == midiName) now comes    */
@@ -77,7 +79,6 @@ export default function Tuner() {
   const [mode, setMode] = useState("strings"); // strings | chromatic
   const [refA, setRefA] = useState(440);
   const [reading, setReading] = useState(null); // { freq, midiFloat }
-  const [showGuide, setShowGuide] = useState(true);
 
   const ctxRef = useRef(null);
   const analyserRef = useRef(null);
@@ -111,7 +112,7 @@ export default function Tuner() {
         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
       });
       streamRef.current = stream;
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = newAudioContext();
       ctxRef.current = ctx;
       const src = ctx.createMediaStreamSource(stream);
       const analyser = ctx.createAnalyser();
@@ -189,44 +190,23 @@ export default function Tuner() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "How do I use this?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>Getting a good read</h3>
-              <p>
-                Tap start and allow the microphone. Pluck one string at a time,
-                near the neck pickup or over the soundhole, and let it ring. The
-                needle steadies as the note sustains. Fresh strings and a quiet
-                room both help; a washing machine in the background does not.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>Reading the needle</h3>
-              <p>
-                The scale is in cents: hundredths of a semitone. Left of center
-                is flat, so tighten the string. Right is sharp, so loosen it.
-                Inside five cents the needle turns green, which is closer than
-                most ears can hear. Tune up to pitch from below for better
-                stability: if you overshoot sharp, drop below and come back up.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>Strings vs chromatic</h3>
-              <p>
-                Strings mode aims you at the nearest string of your chosen
-                tuning, which is what you want while tuning up. Chromatic mode
-                names whatever pitch it hears, useful for checking intonation up
-                the neck or tuning to something unusual. The reference pitch
-                defaults to A440 and can be nudged to match a piano or a band.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="How do I use this?"
+        columns={[
+          {
+            title: "Getting a good read",
+            body: "Tap start and allow the microphone. Pluck one string at a time, near the neck pickup or over the soundhole, and let it ring. The needle steadies as the note sustains. Fresh strings and a quiet room both help; a washing machine in the background does not.",
+          },
+          {
+            title: "Reading the needle",
+            body: "The scale is in cents: hundredths of a semitone. Left of center is flat, so tighten the string. Right is sharp, so loosen it. Inside five cents the needle turns green, which is closer than most ears can hear. Tune up to pitch from below for better stability: if you overshoot sharp, drop below and come back up.",
+          },
+          {
+            title: "Strings vs chromatic",
+            body: "Strings mode aims you at the nearest string of your chosen tuning, which is what you want while tuning up. Chromatic mode names whatever pitch it hears, useful for checking intonation up the neck or tuning to something unusual. The reference pitch defaults to A440 and can be nudged to match a piano or a band.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-row">
@@ -364,13 +344,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 24px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { margin-bottom: 20px; }
 .ctrl-row { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: flex-start; }

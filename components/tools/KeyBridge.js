@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { FIFTHS, SCALES, pcOf } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -25,7 +26,6 @@ const diatonic = (key) =>
 export default function KeyBridge() {
   const [fromKey, setFromKey] = useState("C");
   const [toKey, setToKey] = useState("E");
-  const [showGuide, setShowGuide] = useState(true);
   const [strip, setStrip] = useState([]);
 
   const dA = useMemo(() => diatonic(fromKey), [fromKey]);
@@ -123,45 +123,23 @@ export default function KeyBridge() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "What am I looking at?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                A key change lands well when the listener's ear is escorted, not
-                shoved. Two things do the escorting: pivot chords, which belong
-                to both keys at once and quietly switch allegiance mid-song, and
-                dominants, which point at a new home so hard the ear expects the
-                arrival before it happens.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to read it</h3>
-              <p>
-                Every chord chip wears its job titles: "6m in C · 2m in G" means
-                the same chord holds a different office in each key. That double
-                life is the whole trick. The routes below are ready-made
-                crossings, ordered from smoothest to boldest, and each one can be
-                loaded into the builder and edited.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to use it</h3>
-              <p>
-                Start with a route, then make it yours: stretch the opening with
-                more chords from the left palette, delay the arrival, or repeat
-                the bridge chords to build tension. Rule of thumb: the fewer
-                notes two keys share, the more preparation the change wants. Or
-                none at all, if drama is the goal.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="What am I looking at?"
+        columns={[
+          {
+            title: "The idea",
+            body: "A key change lands well when the listener's ear is escorted, not shoved. Two things do the escorting: pivot chords, which belong to both keys at once and quietly switch allegiance mid-song, and dominants, which point at a new home so hard the ear expects the arrival before it happens.",
+          },
+          {
+            title: "How to read it",
+            body: 'Every chord chip wears its job titles: "6m in C · 2m in G" means the same chord holds a different office in each key. That double life is the whole trick. The routes below are ready-made crossings, ordered from smoothest to boldest, and each one can be loaded into the builder and edited.',
+          },
+          {
+            title: "How to use it",
+            body: "Start with a route, then make it yours: stretch the opening with more chords from the left palette, delay the arrival, or repeat the bridge chords to build tension. Rule of thumb: the fewer notes two keys share, the more preparation the change wants. Or none at all, if drama is the goal.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-group">
@@ -299,13 +277,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 24px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .ctrl-group { display: flex; flex-direction: column; gap: 7px; }

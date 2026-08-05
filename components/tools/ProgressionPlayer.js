@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { FIFTHS, SCALES } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
+import { newAudioContext, midiToFreq } from "@/lib/audio";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -151,7 +153,6 @@ export default function ProgressionPlayer() {
   const [drums, setDrums] = useState(true);
   const [running, setRunning] = useState(false);
   const [bar, setBar] = useState(-1);
-  const [showGuide, setShowGuide] = useState(true);
 
   /* build the chord objects the engine plays */
   const table = DEG_TABLES[mode];
@@ -235,7 +236,7 @@ export default function ProgressionPlayer() {
     const key = midi + (dark ? "d" : "");
     if (cache.has(key)) return cache.get(key);
     const sr = ctx.sampleRate;
-    const freq = 440 * Math.pow(2, (midi - 69) / 12);
+    const freq = midiToFreq(midi);
     const N = Math.max(2, Math.round(sr / freq));
     const len = Math.floor(sr * (dark ? 2.6 : 2.2));
     const buf = ctx.createBuffer(1, len, sr);
@@ -397,7 +398,7 @@ export default function ProgressionPlayer() {
   }, []);
 
   const start = useCallback(() => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = newAudioContext();
     ctxRef.current = ctx;
     buildMaster(ctx);
     barIdxRef.current = 0;
@@ -429,45 +430,23 @@ export default function ProgressionPlayer() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "How do I use this?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                Chords make sense in motion. Reading that the anthem progression
-                is 1, 5, 6m, 4 teaches you a fact; playing over it for ten
-                minutes teaches you the sound. This is a patient rhythm section
-                for exactly that: it loops forever, never speeds up, and never
-                asks to take a break.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>Ways to practice</h3>
-              <p>
-                Strum along to lock in your changes, watching the next chord
-                preview so you're never surprised. Or solo over the loop: pull
-                up the Fretboard Explorer in the same key and aim for chord
-                tones as each bar lands. Try the 12-bar blues preset with
-                sevenths on, the sound that launched a million solos.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>Make it yours</h3>
-              <p>
-                Tap numbers to build any progression up to twelve bars, one
-                chord per bar. Change the key and the whole band transposes
-                instantly; the numbers are doing the work, exactly as the
-                Nashville trainer promised. Slow the tempo when learning, and
-                drop the drums for a quieter bed.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="How do I use this?"
+        columns={[
+          {
+            title: "The idea",
+            body: "Chords make sense in motion. Reading that the anthem progression is 1, 5, 6m, 4 teaches you a fact; playing over it for ten minutes teaches you the sound. This is a patient rhythm section for exactly that: it loops forever, never speeds up, and never asks to take a break.",
+          },
+          {
+            title: "Ways to practice",
+            body: "Strum along to lock in your changes, watching the next chord preview so you're never surprised. Or solo over the loop: pull up the Fretboard Explorer in the same key and aim for chord tones as each bar lands. Try the 12-bar blues preset with sevenths on, the sound that launched a million solos.",
+          },
+          {
+            title: "Make it yours",
+            body: "Tap numbers to build any progression up to twelve bars, one chord per bar. Change the key and the whole band transposes instantly; the numbers are doing the work, exactly as the Nashville trainer promised. Slow the tempo when learning, and drop the drums for a quieter bed.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-row">
@@ -582,13 +561,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 22px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { display: flex; flex-direction: column; gap: 16px; margin-bottom: 22px; max-width: 1100px; }
 .ctrl-row { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: flex-end; }

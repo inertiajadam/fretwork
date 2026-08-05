@@ -68,16 +68,25 @@ prototypes/                Original standalone prototypes (kept for reference)
 - **Fonts** (Fraunces, JetBrains Mono) load via a `<link>` in the root layout,
   so the literal family names the prototypes use still resolve.
 
+## Shared primitives
+
+- **Guide panel** (`components/ui/GuidePanel.js`): the collapsible
+  "What am I looking at?" explainer on every tool. All ten tools render it and
+  pass only their own column copy; the markup, styling, and toggle behavior
+  live in one place.
+- **Audio helpers** (`lib/audio.js`): `newAudioContext()` (with the Safari
+  fallback) and `midiToFreq()`, shared by the four audio tools.
+
 ## Not yet extracted (deliberate follow-ups)
 
-- **Audio engine** (lookahead scheduler, Karplus-Strong strings, drums) is
-  still tool-local in the metronome, progression player, and ear trainer. It
-  was left in place because its timing is fragile and cannot be auditioned in a
-  headless build; extracting it into `lib/audio.js` is a follow-up that should
-  be done with the tools open in a browser.
-- **Shared UI primitives** (guide panel, seg control, chip row, scoreboard) are
-  still implemented per tool. They can be lifted into shared components
-  incrementally.
+- **The heavy audio engine** (lookahead scheduler, Karplus-Strong strings, drum
+  voices) stays tool-local. Those pieces are fragile timing/DSP code, mostly
+  live in a single tool each, and cannot be auditioned in a headless build, so
+  unifying them buys little and risks much. Do it with the tools open in a
+  browser and your ears on.
+- **More UI primitives** (seg control, chip row, scoreboard) are still per
+  tool. They can be lifted into `components/ui/` incrementally, the same way
+  the guide panel was.
 
 ## Roadmap
 

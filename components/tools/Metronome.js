@@ -1,5 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
+import GuidePanel from "@/components/ui/GuidePanel";
+import { newAudioContext } from "@/lib/audio";
 
 /* ------------------------------------------------------------------ */
 /* Time signatures: beats per bar and which beats get the accent       */
@@ -16,7 +18,6 @@ const clampBpm = (b) => Math.max(30, Math.min(260, b));
 /* ------------------------------------------------------------------ */
 export default function MetronomeSpeedBuilder() {
   const [tab, setTab] = useState("metro"); // metro | speed
-  const [showGuide, setShowGuide] = useState(true);
 
   const [bpm, setBpm] = useState(92);
   const [sig, setSig] = useState("4/4");
@@ -114,7 +115,7 @@ export default function MetronomeSpeedBuilder() {
   }, []);
 
   const startAll = useCallback(() => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = newAudioContext();
     ctxRef.current = ctx;
     nextTimeRef.current = ctx.currentTime + 0.08;
     beatCountRef.current = 0;
@@ -178,47 +179,23 @@ export default function MetronomeSpeedBuilder() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "How do I use this?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The metronome</h3>
-              <p>
-                Set a tempo, pick a time signature, press start. The downbeat is
-                brighter and higher so your ear finds the top of the bar without
-                counting. Tap the tempo button in rhythm to match a song you're
-                hearing. Practicing something new? Start slower than feels
-                necessary. Clean and slow becomes clean and fast; sloppy and
-                fast just becomes sloppier.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>The speed ladder</h3>
-              <p>
-                Pick a lick or passage, a comfortable starting tempo, and a
-                goal. In manual mode you're the judge: play a pass, then press
-                Clean to climb or Missed to step back down. Honest presses,
-                honest progress. Auto mode climbs by itself every few bars,
-                which is great for building stamina on something you already
-                have under your fingers.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>Why small steps work</h3>
-              <p>
-                Your hands barely notice four extra beats per minute, and that's
-                the trick: each step is so small there's nothing to tense up
-                about, but twenty minutes of small steps is a tempo jump you'd
-                never manage in one leap. When you hit a wall, drop back two
-                steps and take a run at it. Walls move.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="How do I use this?"
+        columns={[
+          {
+            title: "The metronome",
+            body: "Set a tempo, pick a time signature, press start. The downbeat is brighter and higher so your ear finds the top of the bar without counting. Tap the tempo button in rhythm to match a song you're hearing. Practicing something new? Start slower than feels necessary. Clean and slow becomes clean and fast; sloppy and fast just becomes sloppier.",
+          },
+          {
+            title: "The speed ladder",
+            body: "Pick a lick or passage, a comfortable starting tempo, and a goal. In manual mode you're the judge: play a pass, then press Clean to climb or Missed to step back down. Honest presses, honest progress. Auto mode climbs by itself every few bars, which is great for building stamina on something you already have under your fingers.",
+          },
+          {
+            title: "Why small steps work",
+            body: "Your hands barely notice four extra beats per minute, and that's the trick: each step is so small there's nothing to tense up about, but twenty minutes of small steps is a tempo jump you'd never manage in one leap. When you hit a wall, drop back two steps and take a run at it. Walls move.",
+          },
+        ]}
+      />
 
       <div className="tabs">
         <button className={tab === "metro" ? "on" : ""} aria-pressed={tab === "metro"} onClick={() => setTab("metro")}>Metronome</button>
@@ -334,13 +311,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 22px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .tabs { display: inline-flex; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 22px; }
 .tabs button { background: none; border: none; color: var(--muted); padding: 10px 22px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }

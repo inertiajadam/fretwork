@@ -1,0 +1,40 @@
+.guide {
+  margin-bottom: 24px;
+  max-width: 1100px;
+}
+.toggle {
+  background: none;
+  border: none;
+  color: var(--amber);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0 0 10px;
+  font-weight: 500;
+}
+.body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.col h3 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.col p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+.col p + p {
+  margin-top: 10px;
+}

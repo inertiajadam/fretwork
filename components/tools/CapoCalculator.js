@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { FIFTHS, SHAPE_ORDER, pcOf, diatonicChords } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
 /* Tool-specific copy. Shared theory (scales, fifths, pcOf, diatonic    */
@@ -20,7 +21,6 @@ const chordsOf = (key) => diatonicChords(key, 6);
 /* ------------------------------------------------------------------ */
 export default function CapoCalculator() {
   const [target, setTarget] = useState("Eb");
-  const [showGuide, setShowGuide] = useState(true);
 
   const options = useMemo(() => {
     const tPc = pcOf(target);
@@ -55,47 +55,26 @@ export default function CapoCalculator() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "What am I looking at?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                A capo is a moveable nut. Clamp it at fret 3 and every shape you
-                play sounds three half steps higher, fingering unchanged. So any
-                key, even the flat-heavy ones singers love, can be played with
-                comfortable open shapes. The only question is where to clamp,
-                and that's just subtraction. This tool does the subtracting.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to read it</h3>
-              <p>
-                Each card is one option: the capo fret, the shape family you'd
-                play, and the translation table showing what every open chord
-                sounds as. "Play C, hear Eb" means your hands make the C shape
-                while the room hears Eb. Lower capo positions keep more warmth
-                and sustain; past fret 7 things get tight and boxy, so those
-                options are dimmed.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to use it</h3>
-              <p>
-                Got a chord chart full of barre chords? Find its key here and
-                pick the option whose shapes you like best. Backing a singer who
-                moved the song up a step? Slide the capo up two frets and change
-                nothing else. Playing with another guitarist? Each of you takes
-                a different card: same chords, two different voicings, instant
-                width.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="What am I looking at?"
+        columns={[
+          {
+            title: "The idea",
+            body:
+              "A capo is a moveable nut. Clamp it at fret 3 and every shape you play sounds three half steps higher, fingering unchanged. So any key, even the flat-heavy ones singers love, can be played with comfortable open shapes. The only question is where to clamp, and that's just subtraction. This tool does the subtracting.",
+          },
+          {
+            title: "How to read it",
+            body:
+              'Each card is one option: the capo fret, the shape family you\'d play, and the translation table showing what every open chord sounds as. "Play C, hear Eb" means your hands make the C shape while the room hears Eb. Lower capo positions keep more warmth and sustain; past fret 7 things get tight and boxy, so those options are dimmed.',
+          },
+          {
+            title: "How to use it",
+            body:
+              "Got a chord chart full of barre chords? Find its key here and pick the option whose shapes you like best. Backing a singer who moved the song up a step? Slide the capo up two frets and change nothing else. Playing with another guitarist? Each of you takes a different card: same chords, two different voicings, instant width.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-group">
@@ -173,12 +152,6 @@ header { max-width: 880px; margin-bottom: 22px; }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
 h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; letter-spacing: -0.01em; }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 24px; max-width: 1100px; }
-.guide-toggle { background: none; border: none; color: var(--amber); cursor: pointer; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 0 10px; font-weight: 500; }
-.guide-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .controls { margin-bottom: 24px; }
 .ctrl-group { display: flex; flex-direction: column; gap: 7px; }

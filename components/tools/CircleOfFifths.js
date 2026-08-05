@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { SCALES } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -68,7 +69,6 @@ const sigText = (sig) => {
 /* ------------------------------------------------------------------ */
 export default function CircleOfFifths() {
   const [sel, setSel] = useState(0); // index into WHEEL, C selected
-  const [showGuide, setShowGuide] = useState(true);
 
   const key = WHEEL[sel];
   const scale = SCALES[key.major];
@@ -101,45 +101,23 @@ export default function CircleOfFifths() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "What am I looking at?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                Arrange the twelve keys so each step clockwise jumps up a perfect
-                fifth, and something useful happens: neighbors on the wheel share
-                six of their seven notes. That's why some key changes feel smooth
-                and others feel like a lane change. Distance on this wheel is
-                distance in sound.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to read it</h3>
-              <p>
-                Outer ring is the major keys, inner ring is each key's relative
-                minor (same notes, darker mood). The small ring counts the key
-                signature: one sharp added per clockwise step, one flat per step
-                the other way. When you select a key, its two neighbors stay lit.
-                They are its 4 chord and 5 chord, the keys it borrows from most.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to use it</h3>
-              <p>
-                Writing or jamming in a key? The seven chords below the wheel are
-                your palette, numbered Nashville style. Need to transpose? Keep
-                the numbers, click a different key, and read off the new chords.
-                Stuck on what chord comes next? Try a neighbor on the wheel
-                before anything else. It usually works.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="What am I looking at?"
+        columns={[
+          {
+            title: "The idea",
+            body: "Arrange the twelve keys so each step clockwise jumps up a perfect fifth, and something useful happens: neighbors on the wheel share six of their seven notes. That's why some key changes feel smooth and others feel like a lane change. Distance on this wheel is distance in sound.",
+          },
+          {
+            title: "How to read it",
+            body: "Outer ring is the major keys, inner ring is each key's relative minor (same notes, darker mood). The small ring counts the key signature: one sharp added per clockwise step, one flat per step the other way. When you select a key, its two neighbors stay lit. They are its 4 chord and 5 chord, the keys it borrows from most.",
+          },
+          {
+            title: "How to use it",
+            body: "Writing or jamming in a key? The seven chords below the wheel are your palette, numbered Nashville style. Need to transpose? Keep the numbers, click a different key, and read off the new chords. Stuck on what chord comes next? Try a neighbor on the wheel before anything else. It usually works.",
+          },
+        ]}
+      />
 
       <section className="layout">
         <div className="wheel-wrap">
@@ -240,21 +218,6 @@ h1 {
   margin: 0 0 10px; letter-spacing: -0.01em;
 }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 24px; max-width: 1100px; }
-.guide-toggle {
-  background: none; border: none; color: var(--amber); cursor: pointer;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
-  text-transform: uppercase; padding: 0 0 10px; font-weight: 500;
-}
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 14px; padding: 20px 22px;
-}
-.guide-col h3 { font-family: var(--font-display); font-weight: 650; font-size: 17px; margin: 0 0 8px; }
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .layout { display: grid; grid-template-columns: minmax(300px, 460px) minmax(300px, 1fr); gap: 28px; max-width: 1100px; align-items: start; }
 @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }

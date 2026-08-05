@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { SHARP, FLAT, FLAT_KEYS, KEYS_PC as KEYS, OPEN, INTERVAL, SHAPE_ORDER } from "@/lib/theory";
+import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -109,7 +110,6 @@ export default function FretboardExplorer() {
   const [active, setActive] = useState(new Set(SHAPE_ORDER));
   const [overlay, setOverlay] = useState("chord");
   const [labels, setLabels] = useState("notes");
-  const [showGuide, setShowGuide] = useState(true);
 
   const names = FLAT_KEYS.has(keyPc) ? FLAT : SHARP;
   const keyName = names[keyPc];
@@ -199,45 +199,23 @@ export default function FretboardExplorer() {
         </p>
       </header>
 
-      <section className="guide">
-        <button className="guide-toggle" aria-expanded={showGuide} onClick={() => setShowGuide(!showGuide)}>
-          {showGuide ? "Hide the guide" : "What am I looking at?"}
-        </button>
-        {showGuide && (
-          <div className="guide-body">
-            <div className="guide-col">
-              <h3>The idea</h3>
-              <p>
-                You already know the open C, A, G, E and D chords. The CAGED system's big
-                insight is that these five shapes are moveable: slide any of them up the
-                neck and it becomes a new chord. Stack all five for one key and they tile
-                the entire fretboard, connecting end to end. That's what this board shows:
-                the same chord, five positions, no gaps.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to read it</h3>
-              <p>
-                Each color is one shape; the flags above the board show where each shape
-                sits. A ringed marker is the root, the note the chord is named after.
-                In scale views, solid markers are chord tones (your safe landing spots)
-                and hollow markers are passing tones. A split-color marker belongs to two
-                shapes at once: those shared notes are the doorways between positions.
-              </p>
-            </div>
-            <div className="guide-col">
-              <h3>How to practice</h3>
-              <p>
-                Start with one shape on and play the chord tones until the pattern is
-                automatic. Add its neighbor and walk between them through the shared
-                notes. Then switch to a scale view and solo inside one box, landing on
-                solid markers. When all five feel like home, change the key. The
-                shapes stay the same, they just slide.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      <GuidePanel
+        prompt="What am I looking at?"
+        columns={[
+          {
+            title: "The idea",
+            body: "You already know the open C, A, G, E and D chords. The CAGED system's big insight is that these five shapes are moveable: slide any of them up the neck and it becomes a new chord. Stack all five for one key and they tile the entire fretboard, connecting end to end. That's what this board shows: the same chord, five positions, no gaps.",
+          },
+          {
+            title: "How to read it",
+            body: "Each color is one shape; the flags above the board show where each shape sits. A ringed marker is the root, the note the chord is named after. In scale views, solid markers are chord tones (your safe landing spots) and hollow markers are passing tones. A split-color marker belongs to two shapes at once: those shared notes are the doorways between positions.",
+          },
+          {
+            title: "How to practice",
+            body: "Start with one shape on and play the chord tones until the pattern is automatic. Add its neighbor and walk between them through the shared notes. Then switch to a scale view and solo inside one box, landing on solid markers. When all five feel like home, change the key. The shapes stay the same, they just slide.",
+          },
+        ]}
+      />
 
       <section className="controls">
         <div className="ctrl-group">
@@ -461,24 +439,6 @@ h1 {
   margin: 0 0 10px; letter-spacing: -0.01em;
 }
 .lede { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 0; max-width: 60ch; }
-
-.guide { margin-bottom: 22px; max-width: 1100px; }
-.guide-toggle {
-  background: none; border: none; color: var(--amber); cursor: pointer;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
-  text-transform: uppercase; padding: 0 0 10px; font-weight: 500;
-}
-.guide-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.guide-body {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 14px; padding: 20px 22px;
-}
-.guide-col h3 {
-  font-family: var(--font-display); font-weight: 650; font-size: 17px;
-  margin: 0 0 8px; color: var(--ink);
-}
-.guide-col p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
 .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
 .leg-item {
