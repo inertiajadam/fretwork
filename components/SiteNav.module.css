@@ -12,11 +12,18 @@
   backdrop-filter: blur(8px);
 }
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-family: var(--font-display);
   font-size: 22px;
   font-weight: 650;
   letter-spacing: -0.01em;
   color: var(--ink);
+}
+.brand svg {
+  display: block;
+  flex-shrink: 0;
 }
 .navlinks {
   display: flex;

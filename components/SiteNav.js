@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE_NAME, NAV } from "@/lib/site";
+import { LogoMark } from "./Logo";
 import styles from "./SiteNav.module.css";
 
 export default function SiteNav() {
@@ -10,8 +11,9 @@ export default function SiteNav() {
 
   return (
     <nav className={styles.topnav}>
-      <Link href="/" className={styles.brand}>
-        {SITE_NAME}
+      <Link href="/" className={styles.brand} aria-label={`${SITE_NAME} home`}>
+        <LogoMark size={26} />
+        <span>{SITE_NAME}</span>
       </Link>
       <div className={styles.navlinks}>
         {NAV.map((n) => {
