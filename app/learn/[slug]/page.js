@@ -38,7 +38,7 @@ export default function LessonPage({ params }) {
 
   return (
     <article className={styles.prose}>
-      <JsonLd data={articleSchema(lesson, params.slug)} />
+      <JsonLd data={articleSchema(lesson, `/learn/${params.slug}`)} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },

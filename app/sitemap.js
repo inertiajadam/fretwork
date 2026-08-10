@@ -1,5 +1,6 @@
 import { TOOLS } from "@/lib/site";
 import { LESSONS } from "@/lib/learnContent";
+import { GUIDES } from "@/lib/guides";
 import { absoluteUrl } from "@/lib/seo";
 
 /* Generated sitemap covering every real route. Driven by the registries, */
@@ -10,6 +11,7 @@ export default function sitemap() {
   const staticRoutes = [
     { path: "/", priority: 1.0, changeFrequency: "weekly" },
     { path: "/tools", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/guides", priority: 0.9, changeFrequency: "weekly" },
     { path: "/learn", priority: 0.8, changeFrequency: "weekly" },
     { path: "/about", priority: 0.4, changeFrequency: "monthly" },
     // /practice is hidden from nav for now, so it is omitted from the sitemap.
@@ -27,7 +29,13 @@ export default function sitemap() {
     changeFrequency: "monthly",
   }));
 
-  return [...staticRoutes, ...toolRoutes, ...lessonRoutes].map((r) => ({
+  const guideRoutes = GUIDES.map((g) => ({
+    path: `/guides/${g.slug}`,
+    priority: 0.8,
+    changeFrequency: "monthly",
+  }));
+
+  return [...staticRoutes, ...toolRoutes, ...lessonRoutes, ...guideRoutes].map((r) => ({
     url: absoluteUrl(r.path),
     lastModified: now,
     changeFrequency: r.changeFrequency,
