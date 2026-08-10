@@ -1,6 +1,5 @@
-/* Two-column guide layout: article + sticky sidebar on desktop, single    */
-/* column on mobile. Self-contained typography so it does not fight the     */
-/* shared prose module.                                                     */
+/* Shared article layout for Guides and Learn: article + sticky sidebar on   */
+/* desktop, single column on mobile.                                         */
 .layout {
   max-width: 1160px;
   margin: 0 auto;
@@ -8,7 +7,9 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
   gap: 56px;
-  align-items: start;
+  /* Columns stretch to full row height so the sticky sidebar has room to
+     travel. align-items:start would collapse the aside and break sticky. */
+  align-items: stretch;
 }
 @media (max-width: 940px) {
   .layout {
@@ -70,6 +71,17 @@
 .article strong {
   color: var(--ink);
 }
+.muted {
+  color: var(--muted) !important;
+}
+
+/* Embedded tool (Learn lessons) */
+.toolMount {
+  margin: 28px 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
 
 /* Sidebar */
 .sticky {
@@ -117,10 +129,27 @@
   padding: 5px 0 5px 14px;
   margin-left: -1px;
   border-left: 2px solid transparent;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.12s ease, border-color 0.12s ease;
 }
 .tocLink:hover {
   color: var(--ink);
+  border-left-color: var(--line);
+}
+.tocLinkActive {
+  color: var(--amber);
   border-left-color: var(--amber);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tocLink {
+    transition: none;
+  }
 }
 .sideLinks {
   display: flex;

@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import { GUIDES, guideBySlug } from "@/lib/guides";
 import { toolBySlug } from "@/lib/site";
 import JsonLd from "@/components/JsonLd";
+import ArticleSidebar from "@/components/ArticleSidebar";
 import { articleSchema, faqSchema, breadcrumbSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
-import styles from "./guide.module.css";
+import styles from "@/components/Article.module.css";
 
 export function generateStaticParams() {
   return GUIDES.map((g) => ({ slug: g.slug }));
@@ -62,7 +63,6 @@ export default function GuidePage({ params }) {
     ...s,
     id: s.heading ? slugifyHeading(s.heading) : null,
   }));
-  const toc = sections.filter((s) => s.heading);
   const faqId = "frequently-asked-questions";
 
   const relatedTools = (guide.relatedTools || [])
@@ -71,6 +71,29 @@ export default function GuidePage({ params }) {
   const relatedGuides = (guide.relatedGuides || [])
     .map((s) => guideBySlug(s))
     .filter(Boolean);
+
+  const toc = [
+    ...sections.filter((s) => s.heading).map((s) => ({ id: s.id, label: s.heading })),
+    ...(guide.faqs?.length ? [{ id: faqId, label: "FAQ" }] : []),
+  ];
+
+  const groups = [
+    {
+      title: "Try it free",
+      links: relatedTools.map((t) => ({
+        href: `/tools/${t.slug}`,
+        label: t.name,
+        accent: true,
+      })),
+    },
+    {
+      title: "Keep reading",
+      links: relatedGuides.map((g) => ({
+        href: `/guides/${g.slug}`,
+        label: g.title,
+      })),
+    },
+  ];
 
   return (
     <div className={styles.layout}>
@@ -121,61 +144,7 @@ export default function GuidePage({ params }) {
         </Link>
       </article>
 
-      <aside>
-        <div className={styles.sticky}>
-          {toc.length > 0 && (
-            <nav className={styles.block} aria-label="On this page">
-              <span className={styles.blockTitle}>On this page</span>
-              <div className={styles.toc}>
-                {toc.map((s) => (
-                  <a key={s.id} href={`#${s.id}`} className={styles.tocLink}>
-                    {s.heading}
-                  </a>
-                ))}
-                {guide.faqs?.length > 0 && (
-                  <a href={`#${faqId}`} className={styles.tocLink}>
-                    FAQ
-                  </a>
-                )}
-              </div>
-            </nav>
-          )}
-
-          {relatedTools.length > 0 && (
-            <div className={styles.block}>
-              <span className={styles.blockTitle}>Try it free</span>
-              <div className={styles.sideLinks}>
-                {relatedTools.map((t) => (
-                  <Link
-                    key={t.slug}
-                    href={`/tools/${t.slug}`}
-                    className={`${styles.sideLink} ${styles.toolLink}`}
-                  >
-                    {t.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {relatedGuides.length > 0 && (
-            <div className={styles.block}>
-              <span className={styles.blockTitle}>Keep reading</span>
-              <div className={styles.sideLinks}>
-                {relatedGuides.map((g) => (
-                  <Link
-                    key={g.slug}
-                    href={`/guides/${g.slug}`}
-                    className={styles.sideLink}
-                  >
-                    {g.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </aside>
+      <ArticleSidebar toc={toc} groups={groups} />
     </div>
   );
 }

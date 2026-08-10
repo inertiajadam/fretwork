@@ -4,9 +4,10 @@ import { LESSONS, lessonBySlug } from "@/lib/learnContent";
 import { toolBySlug } from "@/lib/site";
 import { getToolComponent } from "@/components/tools/registry";
 import JsonLd from "@/components/JsonLd";
+import ArticleSidebar from "@/components/ArticleSidebar";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
-import styles from "../../prose.module.css";
+import styles from "@/components/Article.module.css";
 
 export function generateStaticParams() {
   return Object.keys(LESSONS).map((slug) => ({ slug }));
@@ -27,17 +28,50 @@ export function generateMetadata({ params }) {
   };
 }
 
+const slugifyHeading = (h) =>
+  h
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+
 export default function LessonPage({ params }) {
   const lesson = lessonBySlug(params.slug);
   if (!lesson) notFound();
 
-  const Embedded = lesson.embedTool
-    ? getToolComponent(lesson.embedTool)
-    : null;
+  const Embedded = lesson.embedTool ? getToolComponent(lesson.embedTool) : null;
   const embeddedTool = lesson.embedTool ? toolBySlug(lesson.embedTool) : null;
 
+  const blocks = lesson.blocks.map((b) => ({ ...b, id: slugifyHeading(b.h2) }));
+
+  const relatedTools = (lesson.related || [])
+    .map((s) => toolBySlug(s))
+    .filter(Boolean);
+  const moreLessons = Object.keys(LESSONS)
+    .filter((s) => s !== params.slug)
+    .map((s) => ({ slug: s, title: LESSONS[s].title }));
+
+  const toc = blocks.map((b) => ({ id: b.id, label: b.h2 }));
+  const groups = [
+    {
+      title: "Try it free",
+      links: relatedTools.map((t) => ({
+        href: `/tools/${t.slug}`,
+        label: t.name,
+        accent: true,
+      })),
+    },
+    {
+      title: "More lessons",
+      links: moreLessons.map((l) => ({
+        href: `/learn/${l.slug}`,
+        label: l.title,
+      })),
+    },
+  ];
+
   return (
-    <article className={styles.prose}>
+    <div className={styles.layout}>
       <JsonLd data={articleSchema(lesson, `/learn/${params.slug}`)} />
       <JsonLd
         data={breadcrumbSchema([
@@ -46,51 +80,38 @@ export default function LessonPage({ params }) {
           { name: lesson.title, path: `/learn/${params.slug}` },
         ])}
       />
-      <div className={styles.eyebrow}>{lesson.eyebrow}</div>
-      <h1>{lesson.title}</h1>
-      <p>{lesson.intro}</p>
 
-      {lesson.blocks.map((b, i) => (
-        <div key={i}>
-          <h2>{b.h2}</h2>
-          <p>{b.p}</p>
-          {/* Embed the tool right after the first block, where the lesson
-              starts pointing at it. */}
-          {i === 0 && Embedded && (
-            <div className={styles.toolMount}>
-              <Embedded />
-            </div>
-          )}
-        </div>
-      ))}
+      <article className={styles.article}>
+        <div className={styles.eyebrow}>{lesson.eyebrow}</div>
+        <h1>{lesson.title}</h1>
+        <p>{lesson.intro}</p>
 
-      {embeddedTool && (
-        <p className={styles.muted}>
-          Open the full tool on its own page:{" "}
-          <Link href={`/tools/${embeddedTool.slug}`}>{embeddedTool.name}</Link>.
-        </p>
-      )}
+        {blocks.map((b, i) => (
+          <section key={i}>
+            <h2 id={b.id}>{b.h2}</h2>
+            <p>{b.p}</p>
+            {i === 0 && Embedded && (
+              <div className={styles.toolMount}>
+                <Embedded />
+              </div>
+            )}
+          </section>
+        ))}
 
-      {lesson.related?.length > 0 && (
-        <>
-          <h2>Related tools</h2>
-          <ul>
-            {lesson.related.map((slug) => {
-              const t = toolBySlug(slug);
-              if (!t) return null;
-              return (
-                <li key={slug}>
-                  <Link href={`/tools/${slug}`}>{t.name}</Link>: {t.blurb}
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      )}
+        {embeddedTool && (
+          <p className={styles.muted}>
+            Open the full tool on its own page:{" "}
+            <Link href={`/tools/${embeddedTool.slug}`}>{embeddedTool.name}</Link>
+            .
+          </p>
+        )}
 
-      <Link href="/learn" className={styles.backLink}>
-        ← All lessons
-      </Link>
-    </article>
+        <Link href="/learn" className={styles.backLink}>
+          All lessons
+        </Link>
+      </article>
+
+      <ArticleSidebar toc={toc} groups={groups} />
+    </div>
   );
 }
