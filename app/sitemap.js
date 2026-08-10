@@ -12,7 +12,7 @@ export default function sitemap() {
     { path: "/tools", priority: 0.9, changeFrequency: "weekly" },
     { path: "/learn", priority: 0.8, changeFrequency: "weekly" },
     { path: "/about", priority: 0.4, changeFrequency: "monthly" },
-    { path: "/practice", priority: 0.4, changeFrequency: "monthly" },
+    // /practice is hidden from nav for now, so it is omitted from the sitemap.
   ];
 
   const toolRoutes = TOOLS.map((t) => ({
