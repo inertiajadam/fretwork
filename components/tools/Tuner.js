@@ -11,13 +11,50 @@ import { newAudioContext } from "@/lib/audio";
 /* ------------------------------------------------------------------ */
 const noteName = midiName;
 
-const TUNINGS = {
-  standard: { label: "Standard",   strings: [40, 45, 50, 55, 59, 64], names: null },
-  dropD:    { label: "Drop D",     strings: [38, 45, 50, 55, 59, 64], names: null },
-  halfDown: { label: "Half down",  strings: [39, 44, 49, 54, 58, 63], names: ["Eb2","Ab2","Db3","Gb3","Bb3","Eb4"] },
-  openG:    { label: "Open G",     strings: [38, 43, 50, 55, 59, 62], names: null },
-  openD:    { label: "Open D",     strings: [38, 45, 50, 54, 57, 62], names: null },
-  dadgad:   { label: "DADGAD",     strings: [38, 45, 50, 55, 57, 62], names: null },
+/* Tunings grouped by instrument. `strings` are MIDI note numbers, low to    */
+/* high (reentrant courses like the ukulele high-g and the banjo 5th string  */
+/* are listed in playing order). Everything downstream (gauge, chips,        */
+/* nearest-string math) derives from `strings`, so adding instruments here   */
+/* is all that is needed.                                                    */
+const INSTRUMENTS = {
+  guitar: {
+    label: "Guitar",
+    tunings: {
+      standard: { label: "Standard",  strings: [40, 45, 50, 55, 59, 64], names: null },
+      dropD:    { label: "Drop D",    strings: [38, 45, 50, 55, 59, 64], names: null },
+      halfDown: { label: "Half down", strings: [39, 44, 49, 54, 58, 63], names: ["Eb2","Ab2","Db3","Gb3","Bb3","Eb4"] },
+      openG:    { label: "Open G",    strings: [38, 43, 50, 55, 59, 62], names: null },
+      openD:    { label: "Open D",    strings: [38, 45, 50, 54, 57, 62], names: null },
+      dadgad:   { label: "DADGAD",    strings: [38, 45, 50, 55, 57, 62], names: null },
+    },
+  },
+  bass: {
+    label: "Bass",
+    tunings: {
+      four:    { label: "4-string",        strings: [28, 33, 38, 43], names: null },        // E A D G
+      five:    { label: "5-string",        strings: [23, 28, 33, 38, 43], names: null },    // B E A D G
+      six:     { label: "6-string",        strings: [23, 28, 33, 38, 43, 48], names: null },// B E A D G C
+      dropD4:  { label: "Drop D (4)",      strings: [26, 33, 38, 43], names: null },        // D A D G
+    },
+  },
+  banjo: {
+    label: "Banjo",
+    tunings: {
+      three:   { label: "3-string (G D G)",     strings: [55, 62, 67], names: null },
+      tenor:   { label: "4-string tenor (CGDA)", strings: [48, 55, 62, 69], names: null },
+      irish:   { label: "4-string Irish (GDAE)", strings: [43, 50, 57, 64], names: null },
+      five:    { label: "5-string open G",       strings: [50, 55, 59, 62, 67], names: ["D3","G3","B3","D4","g4"] },
+      six:     { label: "6-string (EADGBE)",     strings: [40, 45, 50, 55, 59, 64], names: null },
+    },
+  },
+  ukulele: {
+    label: "Ukulele",
+    tunings: {
+      standard: { label: "Standard (high g)", strings: [67, 60, 64, 69], names: ["g4","C4","E4","A4"] },
+      lowG:     { label: "Low G",             strings: [55, 60, 64, 69], names: null },
+      baritone: { label: "Baritone (DGBE)",   strings: [50, 55, 59, 64], names: null },
+    },
+  },
 };
 
 /* ------------------------------------------------------------------ */
@@ -59,7 +96,8 @@ function autoCorrelate(buf, sampleRate) {
   if (a) T0 = T0 - bb / (2 * a);
 
   const freq = sampleRate / T0;
-  return freq > 40 && freq < 1400 ? freq : -1;
+  // Low bound 25 Hz so a 5/6-string bass low B (~30.9 Hz) is detectable.
+  return freq > 25 && freq < 1400 ? freq : -1;
 }
 
 /* ------------------------------------------------------------------ */
@@ -75,6 +113,7 @@ const polar = (r, deg) => {
 /* ------------------------------------------------------------------ */
 export default function Tuner() {
   const [status, setStatus] = useState("idle"); // idle | listening | denied | error
+  const [instrumentId, setInstrumentId] = useState("guitar");
   const [tuningId, setTuningId] = useState("standard");
   const [mode, setMode] = useState("strings"); // strings | chromatic
   const [refA, setRefA] = useState(440);
@@ -86,11 +125,19 @@ export default function Tuner() {
   const rafRef = useRef(null);
   const histRef = useRef([]);
 
-  const tuning = TUNINGS[tuningId];
+  const instrument = INSTRUMENTS[instrumentId];
+  const tuning =
+    instrument.tunings[tuningId] || Object.values(instrument.tunings)[0];
   const stringLabels = useMemo(
     () => tuning.names || tuning.strings.map(noteName),
     [tuning]
   );
+
+  /* Switching instrument picks that instrument's first tuning. */
+  const changeInstrument = (id) => {
+    setInstrumentId(id);
+    setTuningId(Object.keys(INSTRUMENTS[id].tunings)[0]);
+  };
 
   const stop = () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -186,7 +233,7 @@ export default function Tuner() {
         <h1>Tuner</h1>
         <p className="lede">
           Plug nothing in. Play a string, and the needle shows how close you are
-          in cents, in any of six tunings.
+          in cents, for guitar, bass, banjo, or ukulele.
         </p>
       </header>
 
@@ -211,9 +258,17 @@ export default function Tuner() {
       <section className="controls">
         <div className="ctrl-row">
           <div className="ctrl-group">
+            <span className="ctrl-label">Instrument</span>
+            <div className="seg">
+              {Object.entries(INSTRUMENTS).map(([id, inst]) => (
+                <button key={id} className={instrumentId === id ? "on" : ""} aria-pressed={instrumentId === id} onClick={() => changeInstrument(id)}>{inst.label}</button>
+              ))}
+            </div>
+          </div>
+          <div className="ctrl-group">
             <span className="ctrl-label">Tuning</span>
             <div className="seg">
-              {Object.entries(TUNINGS).map(([id, t]) => (
+              {Object.entries(instrument.tunings).map(([id, t]) => (
                 <button key={id} className={tuningId === id ? "on" : ""} aria-pressed={tuningId === id} onClick={() => setTuningId(id)}>{t.label}</button>
               ))}
             </div>
