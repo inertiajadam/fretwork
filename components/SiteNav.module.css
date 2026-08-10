@@ -44,8 +44,38 @@
   background: var(--panel2);
   color: var(--ink);
 }
-.freeBadge {
+.search {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 13px;
+  transition: border-color 0.12s ease;
+}
+.search:focus-within {
+  border-color: var(--amber);
+}
+.searchIcon {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.searchInput {
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  width: 130px;
+  padding: 0;
+  outline: none;
+}
+.searchInput::placeholder {
+  color: var(--muted);
+}
+.freeBadge {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -54,4 +84,22 @@
   border: 1.5px solid var(--amber);
   border-radius: 999px;
   padding: 5px 12px;
+}
+@media (max-width: 620px) {
+  .search {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+  .searchInput {
+    width: 100%;
+  }
+  .freeBadge {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search {
+    transition: none;
+  }
 }

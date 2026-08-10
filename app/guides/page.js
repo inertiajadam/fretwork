@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { GUIDES } from "@/lib/guides";
+import { GUIDE_CARDS, CATEGORIES } from "@/lib/guides";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
+import GuidesBrowser from "@/components/GuidesBrowser";
 import cards from "@/components/Cards.module.css";
 
 const DESC =
@@ -18,7 +18,7 @@ export default function GuidesIndex() {
   return (
     <section className={cards.wrap}>
       <div className={cards.header}>
-        <div className={cards.eyebrow}>Guides · free, no account</div>
+        <div className={cards.eyebrow}>Guides · {GUIDE_CARDS.length} free reads</div>
         <h1 className={cards.h1}>Guitar guides that actually click</h1>
         <p className={cards.lede}>
           Short, plain-language explainers for the things guitarists get stuck
@@ -26,20 +26,7 @@ export default function GuidesIndex() {
           read.
         </p>
       </div>
-      <div className={cards.grid}>
-        {GUIDES.map((g) => (
-          <Link key={g.slug} href={`/guides/${g.slug}`} className={cards.card}>
-            <div className={cards.cardTop}>
-              <span className={cards.tag}>Guide</span>
-              <span className={`${cards.status} ${cards.built}`}>
-                {g.readMins} min
-              </span>
-            </div>
-            <h3>{g.title}</h3>
-            <p>{g.description}</p>
-          </Link>
-        ))}
-      </div>
+      <GuidesBrowser guides={GUIDE_CARDS} categories={CATEGORIES} />
     </section>
   );
 }

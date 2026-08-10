@@ -1,0 +1,46 @@
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.pill:hover {
+  border-color: var(--amber);
+}
+.pill:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+.on {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #1a130e;
+}
+.count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.on .count {
+  color: #1a130e;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill {
+    transition: none;
+  }
+}
