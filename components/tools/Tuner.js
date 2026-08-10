@@ -119,12 +119,15 @@ export default function Tuner() {
   const [mode, setMode] = useState("strings"); // strings | chromatic
   const [refA, setRefA] = useState(440);
   const [reading, setReading] = useState(null); // { freq, midiFloat }
+  const [sounding, setSounding] = useState(-1); // string index currently playing
 
   const ctxRef = useRef(null);
   const analyserRef = useRef(null);
   const streamRef = useRef(null);
   const rafRef = useRef(null);
   const histRef = useRef([]);
+  const toneCtxRef = useRef(null); // separate context for reference-pitch playback
+  const soundTimerRef = useRef(null);
 
   const instrument = INSTRUMENTS[instrumentId];
   const tuning =
@@ -140,6 +143,53 @@ export default function Tuner() {
     setTuningId(Object.keys(INSTRUMENTS[id].tunings)[0]);
   };
 
+  /* Play the reference pitch of a string so you can tune by ear. A short   */
+  /* plucked tone (fundamental + two partials, lowpass, exponential decay), */
+  /* built at the current A reference so it tracks the ref control. Uses a   */
+  /* dedicated context so it never disturbs the live mic analysis.          */
+  const playString = (midi, idx) => {
+    try {
+      let ctx = toneCtxRef.current;
+      if (!ctx || ctx.state === "closed") {
+        ctx = newAudioContext();
+        toneCtxRef.current = ctx;
+      }
+      if (ctx.state === "suspended") ctx.resume();
+
+      const now = ctx.currentTime;
+      const freq = refA * Math.pow(2, (midi - 69) / 12);
+
+      const master = ctx.createGain();
+      master.connect(ctx.destination);
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = Math.min(freq * 6, 6000);
+      lp.connect(master);
+
+      [[1, 1], [2, 0.34], [3, 0.13]].forEach(([mult, amp]) => {
+        const o = ctx.createOscillator();
+        o.type = "triangle";
+        o.frequency.value = freq * mult;
+        const g = ctx.createGain();
+        g.gain.value = amp;
+        o.connect(g);
+        g.connect(lp);
+        o.start(now);
+        o.stop(now + 2.2);
+      });
+
+      master.gain.setValueAtTime(0.0001, now);
+      master.gain.exponentialRampToValueAtTime(0.3, now + 0.006);
+      master.gain.exponentialRampToValueAtTime(0.0008, now + 2.0);
+
+      setSounding(idx);
+      if (soundTimerRef.current) clearTimeout(soundTimerRef.current);
+      soundTimerRef.current = setTimeout(() => setSounding(-1), 420);
+    } catch {
+      /* audio unavailable in this environment; ignore */
+    }
+  };
+
   const stop = () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = null;
@@ -152,7 +202,14 @@ export default function Tuner() {
     setStatus("idle");
   };
 
-  useEffect(() => stop, []); // cleanup on unmount
+  useEffect(
+    () => () => {
+      stop();
+      if (soundTimerRef.current) clearTimeout(soundTimerRef.current);
+      toneCtxRef.current?.close().catch(() => {});
+    },
+    []
+  ); // cleanup on unmount
 
   const start = async () => {
     try {
@@ -357,11 +414,22 @@ export default function Tuner() {
 
         <div className="string-row">
           {stringLabels.map((n, i) => (
-            <div key={i} className={"string-chip" + (display?.targetIdx === i ? (display.inTune ? " good" : " near") : "")}>
+            <button
+              key={i}
+              type="button"
+              className={
+                "string-chip" +
+                (display?.targetIdx === i ? (display.inTune ? " good" : " near") : "") +
+                (sounding === i ? " sounding" : "")
+              }
+              onClick={() => playString(tuning.strings[i], i)}
+              aria-label={`Play reference pitch for the ${n} string`}
+            >
               {n}
-            </div>
+            </button>
           ))}
         </div>
+        <p className="string-hint">Tap a string to hear its reference pitch.</p>
 
         <div className="actions">
           {status === "listening" ? (
@@ -429,9 +497,16 @@ h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 
 .readout.good .read-line { color: var(--green); }
 
 .string-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.string-chip { background: var(--panel2); border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 13px; font-size: 14px; font-weight: 700; font-family: var(--font-mono); }
+.string-chip { background: var(--panel2); border: 1.5px solid var(--line); color: var(--ink); border-radius: 10px; padding: 8px 13px; font-size: 14px; font-weight: 700; font-family: var(--font-mono); cursor: pointer; -webkit-appearance: none; appearance: none; transition: transform 0.08s ease, border-color 0.12s ease; }
+.string-chip:hover { border-color: var(--amber); }
+.string-chip:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.string-chip:active { transform: translateY(1px); }
 .string-chip.near { border-color: var(--amber); color: var(--amber); }
 .string-chip.good { border-color: var(--green); color: var(--green); }
+.string-chip.sounding { border-color: var(--amber); background: var(--amber); color: #1A130E; }
+.string-hint { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; color: #7A6F60; margin: 0; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) { .string-chip { transition: none; } }
 
 .actions { display: flex; gap: 10px; }
 .go-btn { background: var(--amber); border: none; color: #1A130E; border-radius: 12px; padding: 12px 28px; font-size: 15.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
