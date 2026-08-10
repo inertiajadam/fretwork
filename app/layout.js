@@ -1,8 +1,11 @@
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { SITE_NAME } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const DEFAULT_TITLE = `${SITE_NAME}: free interactive guitar theory tools`;
 const DEFAULT_DESCRIPTION =
@@ -83,6 +86,7 @@ export default function RootLayout({ children }) {
         <main>{children}</main>
         <SiteFooter />
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }
