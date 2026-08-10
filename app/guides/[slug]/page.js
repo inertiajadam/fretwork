@@ -5,7 +5,7 @@ import { toolBySlug } from "@/lib/site";
 import JsonLd from "@/components/JsonLd";
 import { articleSchema, faqSchema, breadcrumbSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
-import styles from "../../prose.module.css";
+import styles from "./guide.module.css";
 
 export function generateStaticParams() {
   return GUIDES.map((g) => ({ slug: g.slug }));
@@ -31,6 +31,13 @@ export function generateMetadata({ params }) {
   };
 }
 
+const slugifyHeading = (h) =>
+  h
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+
 function Body({ items }) {
   return items.map((item, i) => {
     if (typeof item === "string") return <p key={i}>{item}</p>;
@@ -51,6 +58,13 @@ export default function GuidePage({ params }) {
   if (!guide) notFound();
 
   const intro = Array.isArray(guide.intro) ? guide.intro : [guide.intro];
+  const sections = guide.sections.map((s) => ({
+    ...s,
+    id: s.heading ? slugifyHeading(s.heading) : null,
+  }));
+  const toc = sections.filter((s) => s.heading);
+  const faqId = "frequently-asked-questions";
+
   const relatedTools = (guide.relatedTools || [])
     .map((s) => toolBySlug(s))
     .filter(Boolean);
@@ -59,7 +73,7 @@ export default function GuidePage({ params }) {
     .filter(Boolean);
 
   return (
-    <article className={styles.prose}>
+    <div className={styles.layout}>
       <JsonLd
         data={articleSchema(
           { title: guide.title, intro: intro.join(" ") },
@@ -75,59 +89,93 @@ export default function GuidePage({ params }) {
         ])}
       />
 
-      <div className={styles.eyebrow}>Guide · {guide.readMins} min read</div>
-      <h1>{guide.title}</h1>
+      <article className={styles.article}>
+        <div className={styles.eyebrow}>Guide · {guide.readMins} min read</div>
+        <h1>{guide.title}</h1>
 
-      {intro.map((p, i) => (
-        <p key={i}>{p}</p>
-      ))}
+        {intro.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
 
-      {guide.sections.map((s, i) => (
-        <section key={i}>
-          {s.heading && <h2>{s.heading}</h2>}
-          <Body items={s.body} />
-        </section>
-      ))}
+        {sections.map((s, i) => (
+          <section key={i}>
+            {s.heading && <h2 id={s.id}>{s.heading}</h2>}
+            <Body items={s.body} />
+          </section>
+        ))}
 
-      {guide.faqs?.length > 0 && (
-        <>
-          <h2>Frequently asked questions</h2>
-          {guide.faqs.map((f, i) => (
-            <div key={i}>
-              <h3>{f.q}</h3>
-              <p>{f.a}</p>
+        {guide.faqs?.length > 0 && (
+          <section>
+            <h2 id={faqId}>Frequently asked questions</h2>
+            {guide.faqs.map((f, i) => (
+              <div key={i}>
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        <Link href="/guides" className={styles.backLink}>
+          All guides
+        </Link>
+      </article>
+
+      <aside>
+        <div className={styles.sticky}>
+          {toc.length > 0 && (
+            <nav className={styles.block} aria-label="On this page">
+              <span className={styles.blockTitle}>On this page</span>
+              <div className={styles.toc}>
+                {toc.map((s) => (
+                  <a key={s.id} href={`#${s.id}`} className={styles.tocLink}>
+                    {s.heading}
+                  </a>
+                ))}
+                {guide.faqs?.length > 0 && (
+                  <a href={`#${faqId}`} className={styles.tocLink}>
+                    FAQ
+                  </a>
+                )}
+              </div>
+            </nav>
+          )}
+
+          {relatedTools.length > 0 && (
+            <div className={styles.block}>
+              <span className={styles.blockTitle}>Try it free</span>
+              <div className={styles.sideLinks}>
+                {relatedTools.map((t) => (
+                  <Link
+                    key={t.slug}
+                    href={`/tools/${t.slug}`}
+                    className={`${styles.sideLink} ${styles.toolLink}`}
+                  >
+                    {t.name}
+                  </Link>
+                ))}
+              </div>
             </div>
-          ))}
-        </>
-      )}
+          )}
 
-      {relatedTools.length > 0 && (
-        <p>
-          <strong>Try it free:</strong>{" "}
-          {relatedTools.map((t, i, arr) => (
-            <span key={t.slug}>
-              <Link href={`/tools/${t.slug}`}>{t.name}</Link>
-              {i < arr.length - 1 ? ", " : "."}
-            </span>
-          ))}
-        </p>
-      )}
-
-      {relatedGuides.length > 0 && (
-        <p>
-          <strong>Keep reading:</strong>{" "}
-          {relatedGuides.map((g, i, arr) => (
-            <span key={g.slug}>
-              <Link href={`/guides/${g.slug}`}>{g.title}</Link>
-              {i < arr.length - 1 ? ", " : "."}
-            </span>
-          ))}
-        </p>
-      )}
-
-      <Link href="/guides" className={styles.backLink}>
-        All guides
-      </Link>
-    </article>
+          {relatedGuides.length > 0 && (
+            <div className={styles.block}>
+              <span className={styles.blockTitle}>Keep reading</span>
+              <div className={styles.sideLinks}>
+                {relatedGuides.map((g) => (
+                  <Link
+                    key={g.slug}
+                    href={`/guides/${g.slug}`}
+                    className={styles.sideLink}
+                  >
+                    {g.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+    </div>
   );
 }
