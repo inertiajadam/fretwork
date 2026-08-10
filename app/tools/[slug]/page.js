@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TOOLS, toolBySlug, TOOL_KEYWORDS } from "@/lib/site";
+import { toolContentBySlug } from "@/lib/toolContent";
 import { getToolComponent } from "@/components/tools/registry";
 import JsonLd from "@/components/JsonLd";
-import { toolSchema, breadcrumbSchema } from "@/lib/schema";
+import { toolSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./toolPage.module.css";
 
@@ -33,6 +34,8 @@ export default function ToolPage({ params }) {
   const ToolComponent = getToolComponent(params.slug);
   if (!ToolComponent) notFound();
 
+  const content = toolContentBySlug(params.slug);
+
   return (
     <div className={styles.page}>
       <JsonLd data={toolSchema(tool)} />
@@ -43,12 +46,52 @@ export default function ToolPage({ params }) {
           { name: tool.name, path: `/tools/${tool.slug}` },
         ])}
       />
+      {content && <JsonLd data={faqSchema(content.faqs)} />}
       <div className={styles.crumb}>
         <Link href="/tools">Tools</Link>
         <span aria-hidden="true">/</span>
         <span>{tool.name}</span>
       </div>
       <ToolComponent />
+
+      {content && (
+        <section className={styles.seo}>
+          <h2>{content.heading}</h2>
+          <p>{content.intro}</p>
+
+          <h3>{content.stepsTitle}</h3>
+          <ol>
+            {content.steps.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ol>
+
+          <h3>Frequently asked questions</h3>
+          <dl className={styles.faq}>
+            {content.faqs.map((f, i) => (
+              <div key={i}>
+                <dt>{f.q}</dt>
+                <dd>{f.a}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {content.related?.length > 0 && (
+            <p className={styles.related}>
+              Related free tools:{" "}
+              {content.related
+                .map((slug) => toolBySlug(slug))
+                .filter(Boolean)
+                .map((t, i, arr) => (
+                  <span key={t.slug}>
+                    <Link href={`/tools/${t.slug}`}>{t.name}</Link>
+                    {i < arr.length - 1 ? ", " : "."}
+                  </span>
+                ))}
+            </p>
+          )}
+        </section>
+      )}
     </div>
   );
 }
