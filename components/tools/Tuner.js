@@ -45,6 +45,7 @@ const INSTRUMENTS = {
       irish:   { label: "4-string Irish (GDAE)", strings: [43, 50, 57, 64], names: null },
       five:    { label: "5-string open G",       strings: [50, 55, 59, 62, 67], names: ["D3","G3","B3","D4","g4"] },
       six:     { label: "6-string (EADGBE)",     strings: [40, 45, 50, 55, 59, 64], names: null },
+      nashville6: { label: "6-string Nashville", strings: [52, 57, 62, 67, 59, 64], names: null }, // E A D G up an octave; B, e stay
     },
   },
   ukulele: {
