@@ -4,6 +4,8 @@ import { SITE_NAME } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import ThemeScript from "@/components/ThemeScript";
+import { SavedProvider } from "@/components/SavedProvider";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -62,14 +64,18 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#191411",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#191411" },
+    { media: "(prefers-color-scheme: light)", color: "#F4EEE1" },
+  ],
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <ThemeScript />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -82,9 +88,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <SiteNav />
-        <main>{children}</main>
-        <SiteFooter />
+        <SavedProvider>
+          <SiteNav />
+          <main>{children}</main>
+          <SiteFooter />
+        </SavedProvider>
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>

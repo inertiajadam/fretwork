@@ -1,0 +1,61 @@
+.note {
+  padding: 20px clamp(14px, 4vw, 48px);
+  color: var(--muted);
+}
+.empty {
+  max-width: 520px;
+  margin: 8px 0 0;
+}
+.empty h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 10px;
+}
+.empty p {
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.emptyActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.primaryBtn,
+.secondaryBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.primaryBtn {
+  background: var(--amber);
+  color: #1a130e;
+}
+.secondaryBtn {
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.secondaryBtn:hover {
+  border-color: var(--amber);
+}
+.titleLink:hover {
+  color: var(--amber);
+}
+.remove {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+}
+.remove:hover {
+  color: var(--red);
+}

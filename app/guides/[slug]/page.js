@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { GUIDES, guideBySlug } from "@/lib/guides";
 import { toolBySlug } from "@/lib/site";
 import JsonLd from "@/components/JsonLd";
+import SaveButton from "@/components/SaveButton";
 import ArticleSidebar from "@/components/ArticleSidebar";
 import { articleSchema, faqSchema, breadcrumbSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
@@ -115,6 +116,17 @@ export default function GuidePage({ params }) {
       <article className={styles.article}>
         <div className={styles.eyebrow}>Guide · {guide.readMins} min read</div>
         <h1>{guide.title}</h1>
+
+        <div className={styles.byline}>
+          <SaveButton
+            item={{
+              type: "Guide",
+              title: guide.title,
+              href: `/guides/${guide.slug}`,
+              description: guide.description,
+            }}
+          />
+        </div>
 
         {intro.map((p, i) => (
           <p key={i}>{p}</p>

@@ -23,6 +23,31 @@
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+/* Light theme: warm paper palette. Applied when the user picks light mode   */
+/* (or their OS prefers light and they have not chosen). All tools read      */
+/* these tokens, so the whole site follows.                                  */
+:root[data-theme="light"] {
+  --bg: #F4EEE1;
+  --panel: #FBF6EC;
+  --panel2: #F1E9D9;
+  --line: #E1D6C2;
+  --ink: #2A2118;
+  --muted: #6E6152;
+  --amber: #B26A15;
+  --green: #5E8C43;
+  --red: #C0492E;
+
+  --caged-c: #C0492E;
+  --caged-a: #B26A15;
+  --caged-g: #5E8C43;
+  --caged-e: #2E7C90;
+  --caged-d: #7A4FA6;
+
+  color-scheme: light;
 }
 
 * {

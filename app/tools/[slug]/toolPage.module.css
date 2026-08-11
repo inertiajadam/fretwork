@@ -18,6 +18,9 @@
 .crumb span[aria-hidden] {
   color: var(--line);
 }
+.crumb > button {
+  margin-left: auto;
+}
 
 /* SEO content section below the interactive tool. */
 .seo {

@@ -4,6 +4,7 @@ import { TOOLS, toolBySlug, TOOL_KEYWORDS } from "@/lib/site";
 import { toolContentBySlug } from "@/lib/toolContent";
 import { getToolComponent } from "@/components/tools/registry";
 import JsonLd from "@/components/JsonLd";
+import SaveButton from "@/components/SaveButton";
 import { toolSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./toolPage.module.css";
@@ -51,6 +52,14 @@ export default function ToolPage({ params }) {
         <Link href="/tools">Tools</Link>
         <span aria-hidden="true">/</span>
         <span>{tool.name}</span>
+        <SaveButton
+          item={{
+            type: "Tool",
+            title: tool.name,
+            href: `/tools/${tool.slug}`,
+            description: tool.blurb,
+          }}
+        />
       </div>
       <ToolComponent />
 

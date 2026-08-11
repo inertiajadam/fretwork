@@ -1,5 +1,8 @@
 /* Shared article layout for Guides and Learn: article + sticky sidebar on   */
 /* desktop, single column on mobile.                                         */
+.byline {
+  margin: 0 0 26px;
+}
 .layout {
   max-width: 1160px;
   margin: 0 auto;

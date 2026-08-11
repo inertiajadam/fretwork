@@ -5,12 +5,16 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SITE_NAME, NAV } from "@/lib/site";
 import { LogoMark } from "./Logo";
+import ThemeToggle from "./ThemeToggle";
+import { useSaved } from "./SavedProvider";
 import styles from "./SiteNav.module.css";
 
 export default function SiteNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [q, setQ] = useState("");
+  const { items, hydrated } = useSaved();
+  const savedCount = hydrated ? items.length : 0;
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -72,6 +76,31 @@ export default function SiteNav() {
       </form>
 
       <span className={styles.freeBadge}>100% free</span>
+
+      <div className={styles.actions}>
+        <Link
+          href="/saved"
+          className={
+            pathname.startsWith("/saved")
+              ? `${styles.saved} ${styles.savedOn}`
+              : styles.saved
+          }
+          aria-label={`Saved list${savedCount ? `, ${savedCount} items` : ""}`}
+          title="Your practice list"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"
+              fill={savedCount ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+          </svg>
+          {savedCount > 0 && <span className={styles.savedCount}>{savedCount}</span>}
+        </Link>
+        <ThemeToggle />
+      </div>
     </nav>
   );
 }
