@@ -34,34 +34,55 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [ready, setReady] = useState(!isSupabaseConfigured);
   const pushTimer = useRef(null);
+  const syncedRef = useRef(false);
 
   const pushState = useCallback(
     async (u) => {
       const who = u || user;
       if (!supabase || !who) return;
-      const data = snapshotAll();
-      await supabase
-        .from("user_state")
-        .upsert({ user_id: who.id, data, updated_at: new Date().toISOString() });
+      try {
+        const data = snapshotAll();
+        await supabase
+          .from("user_state")
+          .upsert({ user_id: who.id, data, updated_at: new Date().toISOString() });
+      } catch {
+        /* offline or table missing; keep working locally */
+      }
     },
     [supabase, user]
   );
 
   const syncOnLogin = useCallback(
     async (u) => {
-      if (!supabase || !u) return;
-      const { data, error } = await supabase
-        .from("user_state")
-        .select("data")
-        .eq("user_id", u.id)
-        .maybeSingle();
-      if (!error && data && data.data && Object.keys(data.data).length > 0) {
-        // Cloud has data: adopt it, then reload so every provider re-reads.
-        applyAll(data.data);
-        window.location.reload();
-      } else {
-        // First sign-in on this account: seed the cloud from local data.
-        await pushState(u);
+      if (!supabase || !u || syncedRef.current) return;
+      syncedRef.current = true; // run once per page load
+      try {
+        const { data, error } = await supabase
+          .from("user_state")
+          .select("data")
+          .eq("user_id", u.id)
+          .maybeSingle();
+        const cloud =
+          !error && data && data.data && Object.keys(data.data).length > 0
+            ? data.data
+            : null;
+        if (cloud) {
+          applyAll(cloud);
+          // Reflect synced data once. The sessionStorage guard prevents an
+          // infinite reload loop if SIGNED_IN fires again after the reload.
+          if (
+            typeof window !== "undefined" &&
+            !window.sessionStorage.getItem("fw_synced")
+          ) {
+            window.sessionStorage.setItem("fw_synced", "1");
+            window.location.reload();
+          }
+        } else {
+          // First sign-in on this account: seed the cloud from local data.
+          await pushState(u);
+        }
+      } catch {
+        /* ignore sync errors; local-first still works */
       }
     },
     [supabase, pushState]
@@ -128,7 +149,15 @@ export function AuthProvider({ children }) {
         options: { redirectTo: `${window.location.origin}/account` },
       });
     },
-    signOut: () => supabase.auth.signOut(),
+    signOut: () => {
+      try {
+        window.sessionStorage.removeItem("fw_synced");
+      } catch {
+        /* ignore */
+      }
+      syncedRef.current = false;
+      return supabase.auth.signOut();
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
