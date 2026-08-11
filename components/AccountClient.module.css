@@ -73,6 +73,20 @@
 .secondaryBtn:hover {
   border-color: var(--amber);
 }
+.optIn {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.optIn input {
+  margin-top: 2px;
+  accent-color: var(--amber);
+  flex-shrink: 0;
+}
 .or {
   text-align: center;
   color: var(--muted);

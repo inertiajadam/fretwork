@@ -8,6 +8,7 @@ export default function AccountClient() {
   const { enabled, ready, user, signInWithEmail, signInWithGoogle, signOut } =
     useAuth();
   const [email, setEmail] = useState("");
+  const [optIn, setOptIn] = useState(false);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -49,7 +50,7 @@ export default function AccountClient() {
     e.preventDefault();
     setError("");
     setBusy(true);
-    const { error } = await signInWithEmail(email.trim());
+    const { error } = await signInWithEmail(email.trim(), optIn);
     setBusy(false);
     if (error) setError(error.message);
     else setSent(true);
@@ -80,12 +81,26 @@ export default function AccountClient() {
               aria-label="Email address"
               className={styles.input}
             />
+            <label className={styles.optIn}>
+              <input
+                type="checkbox"
+                checked={optIn}
+                onChange={(e) => setOptIn(e.target.checked)}
+              />
+              <span>
+                Send me occasional guitar tips and new-tool updates by email. You
+                can unsubscribe anytime.
+              </span>
+            </label>
             <button type="submit" className={styles.primaryBtn} disabled={busy}>
               {busy ? "Sending..." : "Email me a sign-in link"}
             </button>
           </form>
           <div className={styles.or}>or</div>
-          <button className={styles.googleBtn} onClick={() => signInWithGoogle()}>
+          <button
+            className={styles.googleBtn}
+            onClick={() => signInWithGoogle(optIn)}
+          >
             Continue with Google
           </button>
           {error && <p className={styles.error}>{error}</p>}

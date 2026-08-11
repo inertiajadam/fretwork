@@ -9,7 +9,14 @@ import {
   useCallback,
 } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { snapshotAll, applyAll, subscribe } from "@/lib/prefs";
+import {
+  snapshotAll,
+  applyAll,
+  subscribe,
+  readJSON,
+  removeKey,
+  writeJSON,
+} from "@/lib/prefs";
 
 /* Optional account layer. When Supabase is configured, signing in syncs the
    local-first data (the whole "fw:" namespace) to the cloud so it follows you
@@ -70,7 +77,16 @@ export function AuthProvider({ children }) {
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (event === "SIGNED_IN" && session?.user) syncOnLogin(session.user);
+      if (event === "SIGNED_IN" && session?.user) {
+        // Apply a marketing opt-in captured before an OAuth redirect.
+        if (readJSON("pendingOptIn", false)) {
+          supabase.auth
+            .updateUser({ data: { marketing_opt_in: true } })
+            .catch(() => {});
+          removeKey("pendingOptIn");
+        }
+        syncOnLogin(session.user);
+      }
     });
     return () => {
       mounted = false;
@@ -95,16 +111,23 @@ export function AuthProvider({ children }) {
     enabled: isSupabaseConfigured,
     ready,
     user,
-    signInWithEmail: (email) =>
+    signInWithEmail: (email, optIn = false) =>
       supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: `${window.location.origin}/account` },
+        options: {
+          emailRedirectTo: `${window.location.origin}/account`,
+          // Persists to the created user's metadata regardless of device.
+          data: { marketing_opt_in: !!optIn },
+        },
       }),
-    signInWithGoogle: () =>
-      supabase.auth.signInWithOAuth({
+    signInWithGoogle: (optIn = false) => {
+      // OAuth redirects away, so stash the choice and apply it on return.
+      writeJSON("pendingOptIn", !!optIn);
+      return supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo: `${window.location.origin}/account` },
-      }),
+      });
+    },
     signOut: () => supabase.auth.signOut(),
   };
 
