@@ -7,6 +7,10 @@ import styles from "./AccountClient.module.css";
 export default function AccountClient() {
   const { enabled, ready, user, signInWithEmail, signInWithGoogle, signOut } =
     useAuth();
+  // Google sign-in only shows once the provider is enabled in Supabase and
+  // this flag is set (NEXT_PUBLIC_GOOGLE_AUTH=true), so users never hit the
+  // "provider is not enabled" error.
+  const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "true";
   const [email, setEmail] = useState("");
   const [optIn, setOptIn] = useState(true);
   const [sent, setSent] = useState(false);
@@ -96,13 +100,17 @@ export default function AccountClient() {
               {busy ? "Sending..." : "Email me a sign-in link"}
             </button>
           </form>
-          <div className={styles.or}>or</div>
-          <button
-            className={styles.googleBtn}
-            onClick={() => signInWithGoogle(optIn)}
-          >
-            Continue with Google
-          </button>
+          {googleEnabled && (
+            <>
+              <div className={styles.or}>or</div>
+              <button
+                className={styles.googleBtn}
+                onClick={() => signInWithGoogle(optIn)}
+              >
+                Continue with Google
+              </button>
+            </>
+          )}
           {error && <p className={styles.error}>{error}</p>}
         </>
       )}
