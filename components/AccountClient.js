@@ -8,7 +8,7 @@ export default function AccountClient() {
   const { enabled, ready, user, signInWithEmail, signInWithGoogle, signOut } =
     useAuth();
   const [email, setEmail] = useState("");
-  const [optIn, setOptIn] = useState(false);
+  const [optIn, setOptIn] = useState(true);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
