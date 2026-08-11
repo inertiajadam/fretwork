@@ -6,6 +6,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import ThemeScript from "@/components/ThemeScript";
 import { SavedProvider } from "@/components/SavedProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -88,11 +89,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <SavedProvider>
-          <SiteNav />
-          <main>{children}</main>
-          <SiteFooter />
-        </SavedProvider>
+        <AuthProvider>
+          <SavedProvider>
+            <SiteNav />
+            <main>{children}</main>
+            <SiteFooter />
+          </SavedProvider>
+        </AuthProvider>
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>

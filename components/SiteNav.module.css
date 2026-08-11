@@ -120,6 +120,21 @@
   font-size: 12px;
   font-weight: 600;
 }
+.account {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+}
+.account:hover {
+  color: var(--ink);
+  border-color: var(--amber);
+}
 @media (max-width: 860px) {
   .freeBadge {
     display: none;

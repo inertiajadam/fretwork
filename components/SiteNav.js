@@ -7,6 +7,7 @@ import { SITE_NAME, NAV } from "@/lib/site";
 import { LogoMark } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useSaved } from "./SavedProvider";
+import { useAuth } from "./AuthProvider";
 import styles from "./SiteNav.module.css";
 
 export default function SiteNav() {
@@ -15,6 +16,7 @@ export default function SiteNav() {
   const [q, setQ] = useState("");
   const { items, hydrated } = useSaved();
   const savedCount = hydrated ? items.length : 0;
+  const { enabled: authEnabled, user } = useAuth();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -100,6 +102,28 @@ export default function SiteNav() {
           {savedCount > 0 && <span className={styles.savedCount}>{savedCount}</span>}
         </Link>
         <ThemeToggle />
+        {authEnabled && (
+          <Link
+            href="/account"
+            className={
+              pathname.startsWith("/account")
+                ? `${styles.account} ${styles.savedOn}`
+                : styles.account
+            }
+            aria-label={user ? "Your account" : "Sign in"}
+            title={user ? "Your account" : "Sign in"}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.6" stroke="currentColor" strokeWidth="2" />
+              <path
+                d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </Link>
+        )}
       </div>
     </nav>
   );
