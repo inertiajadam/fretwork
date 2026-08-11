@@ -1,4 +1,5 @@
 import SavedList from "@/components/SavedList";
+import ProgressSummary from "@/components/ProgressSummary";
 import cards from "@/components/Cards.module.css";
 
 export const metadata = {
@@ -12,13 +13,15 @@ export default function SavedPage() {
   return (
     <section className={cards.wrap}>
       <div className={cards.header}>
-        <div className={cards.eyebrow}>Your practice list</div>
-        <h1 className={cards.h1}>Saved to work on</h1>
+        <div className={cards.eyebrow}>Your progress</div>
+        <h1 className={cards.h1}>Your practice</h1>
         <p className={cards.lede}>
-          Everything you saved, in one place. It lives in this browser now, and
-          will follow you across devices once accounts arrive.
+          Your streak, quiz bests, and saved list, all in one place. It lives in
+          this browser now, and will follow you across devices once accounts
+          arrive.
         </p>
       </div>
+      <ProgressSummary />
       <SavedList />
     </section>
   );

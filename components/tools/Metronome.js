@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import GuidePanel from "@/components/ui/GuidePanel";
 import { newAudioContext } from "@/lib/audio";
 
@@ -17,10 +18,10 @@ const clampBpm = (b) => Math.max(30, Math.min(260, b));
 
 /* ------------------------------------------------------------------ */
 export default function MetronomeSpeedBuilder() {
-  const [tab, setTab] = useState("metro"); // metro | speed
+  const [tab, setTab] = usePersistedState("tool.metronome.tab", "metro"); // metro | speed
 
-  const [bpm, setBpm] = useState(92);
-  const [sig, setSig] = useState("4/4");
+  const [bpm, setBpm] = usePersistedState("tool.metronome.bpm", 92);
+  const [sig, setSig] = usePersistedState("tool.metronome.sig", "4/4");
   const [running, setRunning] = useState(false);
   const [beat, setBeat] = useState(-1);
 

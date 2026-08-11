@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { recordAnswer } from "@/lib/progress";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import GuidePanel from "@/components/ui/GuidePanel";
 import { newAudioContext, midiToFreq } from "@/lib/audio";
 
@@ -64,9 +66,9 @@ const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 /* ------------------------------------------------------------------ */
 export default function EarTrainer() {
-  const [drill, setDrill] = useState("intervals");
-  const [level, setLevel] = useState(0);
-  const [style, setStyle] = useState("melodic"); // intervals only
+  const [drill, setDrill] = usePersistedState("tool.ear.drill", "intervals");
+  const [level, setLevel] = usePersistedState("tool.ear.level", 0);
+  const [style, setStyle] = usePersistedState("tool.ear.style", "melodic"); // intervals only
   const [q, setQ] = useState(null);
   const [picked, setPicked] = useState(null);
   const [played, setPlayed] = useState(false);
@@ -161,12 +163,13 @@ export default function EarTrainer() {
     if (!q || picked !== null || !played) return;
     setPicked(opt);
     const right = opt === q.answer;
-    setScore((s) => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 }));
-    setStreak((st) => {
-      const ns = right ? st + 1 : 0;
-      setBest((b) => Math.max(b, ns));
-      return ns;
-    });
+    const nextRight = score.right + (right ? 1 : 0);
+    const nextTotal = score.total + 1;
+    const ns = right ? streak + 1 : 0;
+    setScore({ right: nextRight, total: nextTotal });
+    setStreak(ns);
+    setBest((b) => Math.max(b, ns));
+    recordAnswer("ear-trainer", { streak: ns, right: nextRight, total: nextTotal });
   };
 
   const whyLine = () => {

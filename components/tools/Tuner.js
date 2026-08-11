@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import { midiName } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
 import { newAudioContext } from "@/lib/audio";
@@ -114,10 +115,10 @@ const polar = (r, deg) => {
 /* ------------------------------------------------------------------ */
 export default function Tuner() {
   const [status, setStatus] = useState("idle"); // idle | listening | denied | error
-  const [instrumentId, setInstrumentId] = useState("guitar");
-  const [tuningId, setTuningId] = useState("standard");
-  const [mode, setMode] = useState("strings"); // strings | chromatic
-  const [refA, setRefA] = useState(440);
+  const [instrumentId, setInstrumentId] = usePersistedState("tool.tuner.instrument", "guitar");
+  const [tuningId, setTuningId] = usePersistedState("tool.tuner.tuning", "standard");
+  const [mode, setMode] = usePersistedState("tool.tuner.mode", "strings"); // strings | chromatic
+  const [refA, setRefA] = usePersistedState("tool.tuner.refA", 440);
   const [reading, setReading] = useState(null); // { freq, midiFloat }
   const [sounding, setSounding] = useState(-1); // string index currently playing
 

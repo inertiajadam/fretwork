@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { SCALES } from "@/lib/theory";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
@@ -68,7 +69,7 @@ const sigText = (sig) => {
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
 export default function CircleOfFifths() {
-  const [sel, setSel] = useState(0); // index into WHEEL, C selected
+  const [sel, setSel] = usePersistedState("tool.circle.key", 0); // index into WHEEL, C selected
 
   const key = WHEEL[sel];
   const scale = SCALES[key.major];

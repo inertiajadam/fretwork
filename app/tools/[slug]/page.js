@@ -5,6 +5,7 @@ import { toolContentBySlug } from "@/lib/toolContent";
 import { getToolComponent } from "@/components/tools/registry";
 import JsonLd from "@/components/JsonLd";
 import SaveButton from "@/components/SaveButton";
+import PracticeTracker from "@/components/PracticeTracker";
 import { toolSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./toolPage.module.css";
@@ -39,6 +40,7 @@ export default function ToolPage({ params }) {
 
   return (
     <div className={styles.page}>
+      <PracticeTracker />
       <JsonLd data={toolSchema(tool)} />
       <JsonLd
         data={breadcrumbSchema([

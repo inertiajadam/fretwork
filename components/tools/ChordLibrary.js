@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { SHARP, FLAT, FLAT_ROOTS, ROOTS, OPEN, INTERVAL, SHAPE_COLORS, SHAPE_ORDER } from "@/lib/theory";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
@@ -219,8 +220,8 @@ function Diagram({ form, base, rootPc, names }) {
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
 export default function ChordLibrary() {
-  const [rootPc, setRootPc] = useState(7); // G
-  const [quality, setQuality] = useState("maj");
+  const [rootPc, setRootPc] = usePersistedState("tool.chords.root", 7); // G
+  const [quality, setQuality] = usePersistedState("tool.chords.quality", "maj");
 
   const names = FLAT_ROOTS.has(rootPc) ? FLAT : SHARP;
   const q = QUALITIES[quality];

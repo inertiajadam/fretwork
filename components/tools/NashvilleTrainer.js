@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import { recordAnswer } from "@/lib/progress";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import { FIFTHS, SCALES } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
 
@@ -37,8 +39,8 @@ export default function NashvilleTrainer() {
   const [tab, setTab] = useState("learn"); // learn | quiz
 
   /* ------------------------- learn state ------------------------- */
-  const [key, setKey] = useState("G");
-  const [altKey, setAltKey] = useState("E");
+  const [key, setKey] = usePersistedState("tool.nashville.key", "G");
+  const [altKey, setAltKey] = usePersistedState("tool.nashville.altKey", "E");
   const [strip, setStrip] = useState([0, 4, 5, 3]);
 
   /* ------------------------- quiz state -------------------------- */
@@ -72,12 +74,13 @@ export default function NashvilleTrainer() {
     if (picked !== null) return;
     setPicked(opt);
     const right = opt === q.answer;
-    setScore((s) => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 }));
-    setStreak((st) => {
-      const ns = right ? st + 1 : 0;
-      setBest((b) => Math.max(b, ns));
-      return ns;
-    });
+    const nextRight = score.right + (right ? 1 : 0);
+    const nextTotal = score.total + 1;
+    const ns = right ? streak + 1 : 0;
+    setScore({ right: nextRight, total: nextTotal });
+    setStreak(ns);
+    setBest((b) => Math.max(b, ns));
+    recordAnswer("nashville-trainer", { streak: ns, right: nextRight, total: nextTotal });
   };
 
   const stripChords = useMemo(() => strip.map((d) => ({ deg: d, num: NUMS[d], a: chordAt(key, d), b: chordAt(altKey, d) })), [strip, key, altKey]);

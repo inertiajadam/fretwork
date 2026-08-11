@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { FIFTHS, SHAPE_ORDER, pcOf, diatonicChords } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
+import { usePersistedState } from "@/hooks/usePersistedState";
 
 /* ------------------------------------------------------------------ */
 /* Tool-specific copy. Shared theory (scales, fifths, pcOf, diatonic    */
@@ -20,7 +21,7 @@ const chordsOf = (key) => diatonicChords(key, 6);
 
 /* ------------------------------------------------------------------ */
 export default function CapoCalculator() {
-  const [target, setTarget] = useState("Eb");
+  const [target, setTarget] = usePersistedState("tool.capo.target", "Eb");
 
   const options = useMemo(() => {
     const tPc = pcOf(target);

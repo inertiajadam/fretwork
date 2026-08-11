@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { FIFTHS, SCALES } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
 import { newAudioContext, midiToFreq } from "@/lib/audio";
+import { usePersistedState } from "@/hooks/usePersistedState";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -143,14 +144,14 @@ const FEELS = {
 
 /* ------------------------------------------------------------------ */
 export default function ProgressionPlayer() {
-  const [key, setKey] = useState("A");
+  const [key, setKey] = usePersistedState("tool.progression.key", "A");
   const [mode, setMode] = useState("major");
-  const [degrees, setDegrees] = useState(PRESETS[1].degrees);
+  const [degrees, setDegrees] = usePersistedState("tool.progression.progression", PRESETS[1].degrees);
   const [seventh, setSeventh] = useState(false);
-  const [feelId, setFeelId] = useState("folk");
+  const [feelId, setFeelId] = usePersistedState("tool.progression.feel", "folk");
   const [meterId, setMeterId] = useState("4/4");
-  const [bpm, setBpm] = useState(92);
-  const [drums, setDrums] = useState(true);
+  const [bpm, setBpm] = usePersistedState("tool.progression.bpm", 92);
+  const [drums, setDrums] = usePersistedState("tool.progression.drums", true);
   const [running, setRunning] = useState(false);
   const [bar, setBar] = useState(-1);
 

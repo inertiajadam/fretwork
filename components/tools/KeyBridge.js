@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { FIFTHS, SCALES, pcOf } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
+import { usePersistedState } from "@/hooks/usePersistedState";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -24,8 +25,8 @@ const diatonic = (key) =>
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
 export default function KeyBridge() {
-  const [fromKey, setFromKey] = useState("C");
-  const [toKey, setToKey] = useState("E");
+  const [fromKey, setFromKey] = usePersistedState("tool.keybridge.from", "C");
+  const [toKey, setToKey] = usePersistedState("tool.keybridge.to", "E");
   const [strip, setStrip] = useState([]);
 
   const dA = useMemo(() => diatonic(fromKey), [fromKey]);

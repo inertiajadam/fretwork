@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { SHARP, FLAT, FLAT_KEYS, KEYS_PC as KEYS, OPEN, INTERVAL, SHAPE_ORDER } from "@/lib/theory";
+import { usePersistedState } from "@/hooks/usePersistedState";
 import GuidePanel from "@/components/ui/GuidePanel";
 
 /* ------------------------------------------------------------------ */
@@ -106,10 +107,10 @@ const SVG_H = BOARD_BOTTOM + 62;
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 export default function FretboardExplorer() {
-  const [keyPc, setKeyPc] = useState(7); // G
+  const [keyPc, setKeyPc] = usePersistedState("tool.fretboard.key", 7); // G
   const [active, setActive] = useState(new Set(SHAPE_ORDER));
-  const [overlay, setOverlay] = useState("chord");
-  const [labels, setLabels] = useState("notes");
+  const [overlay, setOverlay] = usePersistedState("tool.fretboard.overlay", "chord");
+  const [labels, setLabels] = usePersistedState("tool.fretboard.labels", "notes");
 
   const names = FLAT_KEYS.has(keyPc) ? FLAT : SHARP;
   const keyName = names[keyPc];
