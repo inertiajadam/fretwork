@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SITE_NAME, NAV } from "@/lib/site";
@@ -14,15 +14,71 @@ export default function SiteNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [q, setQ] = useState("");
+  const [open, setOpen] = useState(false);
   const { items, hydrated } = useSaved();
   const savedCount = hydrated ? items.length : 0;
   const { enabled: authEnabled, user } = useAuth();
 
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   const onSubmit = (e) => {
     e.preventDefault();
     const query = q.trim();
+    setOpen(false);
     router.push(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
   };
+
+  const searchForm = (
+    <form className={styles.search} role="search" onSubmit={onSubmit}>
+      <svg
+        className={styles.searchIcon}
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+        <line
+          x1="16.5"
+          y1="16.5"
+          x2="21"
+          y2="21"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+      <input
+        type="search"
+        className={styles.searchInput}
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Search"
+        aria-label="Search the site"
+      />
+    </form>
+  );
+
+  const navLinks = (className, onClick) =>
+    NAV.map((n) => {
+      const active =
+        n.href === "/" ? pathname === "/" : pathname.startsWith(n.href);
+      return (
+        <Link
+          key={n.href}
+          href={n.href}
+          className={active ? `${className} ${styles.on}` : className}
+          aria-current={active ? "page" : undefined}
+          onClick={onClick}
+        >
+          {n.label}
+        </Link>
+      );
+    });
 
   return (
     <nav className={styles.topnav}>
@@ -30,52 +86,10 @@ export default function SiteNav() {
         <LogoMark size={26} />
         <span>{SITE_NAME}</span>
       </Link>
-      <div className={styles.navlinks}>
-        {NAV.map((n) => {
-          const active =
-            n.href === "/" ? pathname === "/" : pathname.startsWith(n.href);
-          return (
-            <Link
-              key={n.href}
-              href={n.href}
-              className={active ? `${styles.navlink} ${styles.on}` : styles.navlink}
-              aria-current={active ? "page" : undefined}
-            >
-              {n.label}
-            </Link>
-          );
-        })}
-      </div>
 
-      <form className={styles.search} role="search" onSubmit={onSubmit}>
-        <svg
-          className={styles.searchIcon}
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-          <line
-            x1="16.5"
-            y1="16.5"
-            x2="21"
-            y2="21"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-        <input
-          type="search"
-          className={styles.searchInput}
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search"
-          aria-label="Search the site"
-        />
-      </form>
+      <div className={styles.navlinks}>{navLinks(styles.navlink)}</div>
+
+      <div className={styles.barSearch}>{searchForm}</div>
 
       <span className={styles.freeBadge}>100% free</span>
 
@@ -124,7 +138,37 @@ export default function SiteNav() {
             </svg>
           </Link>
         )}
+        <button
+          type="button"
+          className={styles.menuBtn}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          onClick={() => setOpen((o) => !o)}
+        >
+          {open ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="3.5" y1="7" x2="20.5" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="3.5" y1="12" x2="20.5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="3.5" y1="17" x2="20.5" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {open && (
+        <div className={styles.mobileMenu} id="mobile-menu">
+          <div className={styles.mobileSearch}>{searchForm}</div>
+          <div className={styles.mobileLinks}>
+            {navLinks(styles.mobileLink, () => setOpen(false))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
