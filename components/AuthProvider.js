@@ -21,7 +21,11 @@ import {
 /* Optional account layer. When Supabase is configured, signing in syncs the
    local-first data (the whole "fw:" namespace) to the cloud so it follows you
    across devices. When it is not configured, this is an inert pass-through and
-   everything keeps working locally. */
+   everything keeps working locally.
+
+   Note: the sync callbacks read the current user from a ref, not from state,
+   so they keep a stable identity. Depending on the `user` state here would make
+   the auth effect re-run every time the session object changes and loop. */
 
 const AuthContext = createContext({
   enabled: false,
@@ -33,24 +37,27 @@ export function AuthProvider({ children }) {
   const supabase = getSupabase();
   const [user, setUser] = useState(null);
   const [ready, setReady] = useState(!isSupabaseConfigured);
+  const userRef = useRef(null);
   const pushTimer = useRef(null);
   const syncedRef = useRef(false);
 
-  const pushState = useCallback(
-    async (u) => {
-      const who = u || user;
-      if (!supabase || !who) return;
-      try {
-        const data = snapshotAll();
-        await supabase
-          .from("user_state")
-          .upsert({ user_id: who.id, data, updated_at: new Date().toISOString() });
-      } catch {
-        /* offline or table missing; keep working locally */
-      }
-    },
-    [supabase, user]
-  );
+  const setCurrentUser = useCallback((u) => {
+    userRef.current = u;
+    setUser(u);
+  }, []);
+
+  const pushState = useCallback(async () => {
+    const who = userRef.current;
+    if (!supabase || !who) return;
+    try {
+      const data = snapshotAll();
+      await supabase
+        .from("user_state")
+        .upsert({ user_id: who.id, data, updated_at: new Date().toISOString() });
+    } catch {
+      /* offline or table missing; keep working locally */
+    }
+  }, [supabase]);
 
   const syncOnLogin = useCallback(
     async (u) => {
@@ -69,7 +76,7 @@ export function AuthProvider({ children }) {
         if (cloud) {
           applyAll(cloud);
           // Reflect synced data once. The sessionStorage guard prevents an
-          // infinite reload loop if SIGNED_IN fires again after the reload.
+          // extra reload if SIGNED_IN fires again after the reload.
           if (
             typeof window !== "undefined" &&
             !window.sessionStorage.getItem("fw_synced")
@@ -79,7 +86,7 @@ export function AuthProvider({ children }) {
           }
         } else {
           // First sign-in on this account: seed the cloud from local data.
-          await pushState(u);
+          await pushState();
         }
       } catch {
         /* ignore sync errors; local-first still works */
@@ -88,18 +95,18 @@ export function AuthProvider({ children }) {
     [supabase, pushState]
   );
 
+  // Runs once (all deps are stable): track the session and sync on sign-in.
   useEffect(() => {
     if (!supabase) return;
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
-      setUser(data.session?.user ?? null);
+      setCurrentUser(data.session?.user ?? null);
       setReady(true);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
+      setCurrentUser(session?.user ?? null);
       if (event === "SIGNED_IN" && session?.user) {
-        // Apply a marketing opt-in captured before an OAuth redirect.
         if (readJSON("pendingOptIn", false)) {
           supabase.auth
             .updateUser({ data: { marketing_opt_in: true } })
@@ -113,11 +120,11 @@ export function AuthProvider({ children }) {
       mounted = false;
       sub.subscription.unsubscribe();
     };
-  }, [supabase, syncOnLogin]);
+  }, [supabase, syncOnLogin, setCurrentUser]);
 
-  // While signed in, push local changes up (debounced).
+  // Push local changes up (debounced). pushState no-ops when not signed in.
   useEffect(() => {
-    if (!supabase || !user) return;
+    if (!supabase) return;
     const unsub = subscribe(() => {
       clearTimeout(pushTimer.current);
       pushTimer.current = setTimeout(() => pushState(), 1200);
@@ -126,7 +133,7 @@ export function AuthProvider({ children }) {
       unsub();
       clearTimeout(pushTimer.current);
     };
-  }, [supabase, user, pushState]);
+  }, [supabase, pushState]);
 
   const value = {
     enabled: isSupabaseConfigured,
@@ -137,12 +144,10 @@ export function AuthProvider({ children }) {
         email,
         options: {
           emailRedirectTo: `${window.location.origin}/account`,
-          // Persists to the created user's metadata regardless of device.
           data: { marketing_opt_in: !!optIn },
         },
       }),
     signInWithGoogle: (optIn = false) => {
-      // OAuth redirects away, so stash the choice and apply it on return.
       writeJSON("pendingOptIn", !!optIn);
       return supabase.auth.signInWithOAuth({
         provider: "google",
