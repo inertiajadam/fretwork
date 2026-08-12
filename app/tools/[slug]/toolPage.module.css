@@ -22,12 +22,25 @@
   margin-left: auto;
 }
 
-/* SEO content section below the interactive tool. */
+/* "About this tool" section below the interactive tool. A full-width band with
+   a subtle panel tint, content left-aligned to the same gutter as the tool, so
+   it reads as a deliberate part of the page rather than a centered afterthought. */
 .seo {
-  max-width: 760px;
-  margin: 8px auto 0;
-  padding: 40px clamp(14px, 4vw, 48px) 8px;
+  margin-top: 16px;
   border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 55%, transparent);
+  padding: 48px clamp(14px, 4vw, 48px) 48px;
+}
+.seoInner {
+  max-width: 800px;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
 }
 .seo h2 {
   font-family: var(--font-display);

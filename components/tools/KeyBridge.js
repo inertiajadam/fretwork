@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { FIFTHS, SCALES, pcOf } from "@/lib/theory";
 import GuidePanel from "@/components/ui/GuidePanel";
 import { usePersistedState } from "@/hooks/usePersistedState";
+import { newAudioContext, midiToFreq } from "@/lib/audio";
 
 /* ------------------------------------------------------------------ */
 /* Music data                                                          */
@@ -21,6 +22,21 @@ const diatonic = (key) =>
     degree: i,
   }));
 
+/* Turn a chord symbol (C, Dm, G7, E°) into MIDI notes for playback. */
+const CHORD_TONES = { maj: [0, 4, 7], min: [0, 3, 7], dim: [0, 3, 6], dom7: [0, 4, 7, 10] };
+function chordMidis(name) {
+  let quality = "maj";
+  let root = name;
+  if (name.endsWith("°")) { quality = "dim"; root = name.slice(0, -1); }
+  else if (name.endsWith("7")) { quality = "dom7"; root = name.slice(0, -1); }
+  else if (name.endsWith("m")) { quality = "min"; root = name.slice(0, -1); }
+  const pc = pcOf(root);
+  const base = 48 + pc; // root in the C3 octave
+  const notes = (CHORD_TONES[quality] || CHORD_TONES.maj).map((t) => base + t);
+  notes.unshift(base - 12); // bass note an octave down
+  return notes;
+}
+
 /* ------------------------------------------------------------------ */
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
@@ -28,6 +44,63 @@ export default function KeyBridge() {
   const [fromKey, setFromKey] = usePersistedState("tool.keybridge.from", "C");
   const [toKey, setToKey] = usePersistedState("tool.keybridge.to", "E");
   const [strip, setStrip] = useState([]);
+  const [playing, setPlaying] = useState(false);
+  const [playIdx, setPlayIdx] = useState(-1);
+  const audioRef = useRef(null);
+  const timersRef = useRef([]);
+
+  const stopPlay = () => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+    if (audioRef.current) {
+      audioRef.current.close().catch(() => {});
+      audioRef.current = null;
+    }
+    setPlaying(false);
+    setPlayIdx(-1);
+  };
+
+  useEffect(() => stopPlay, []); // stop audio on unmount
+
+  const scheduleChord = (ctx, midis, at, dur) => {
+    const master = ctx.createGain();
+    master.connect(ctx.destination);
+    master.gain.setValueAtTime(0.0001, at);
+    master.gain.exponentialRampToValueAtTime(0.26, at + 0.02);
+    master.gain.exponentialRampToValueAtTime(0.0012, at + dur * 0.95);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 3200;
+    lp.connect(master);
+    midis.forEach((m, j) => {
+      const o = ctx.createOscillator();
+      o.type = "triangle";
+      o.frequency.value = midiToFreq(m);
+      const g = ctx.createGain();
+      g.gain.value = j === 0 ? 0.5 : 0.3;
+      o.connect(g);
+      g.connect(lp);
+      o.start(at + j * 0.02); // slight strum
+      o.stop(at + dur);
+    });
+  };
+
+  const play = () => {
+    if (playing) { stopPlay(); return; }
+    if (!strip.length) return;
+    const ctx = newAudioContext();
+    audioRef.current = ctx;
+    const dur = 1.1; // seconds per chord
+    const start = ctx.currentTime + 0.06;
+    strip.forEach((c, i) => {
+      scheduleChord(ctx, chordMidis(c.name), start + i * dur, dur);
+      timersRef.current.push(setTimeout(() => setPlayIdx(i), (0.06 + i * dur) * 1000));
+    });
+    setPlaying(true);
+    timersRef.current.push(
+      setTimeout(stopPlay, (0.06 + strip.length * dur) * 1000 + 250)
+    );
+  };
 
   const dA = useMemo(() => diatonic(fromKey), [fromKey]);
   const dB = useMemo(() => diatonic(toKey), [toKey]);
@@ -109,6 +182,12 @@ export default function KeyBridge() {
 
   const addChord = (name) => setStrip((s) => [...s, mk(name)]);
   const loadRoute = (chords) => setStrip(chords);
+
+  // Stop any playback when the progression is edited.
+  useEffect(() => {
+    if (audioRef.current) stopPlay();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [strip]);
 
   return (
     <div className="app">
@@ -249,7 +328,7 @@ export default function KeyBridge() {
             <span className="hint-line">Tap chords above, or load a route. Your progression appears here.</span>
           ) : (
             strip.map((c, i) => (
-              <div key={i} className="strip-item">
+              <div key={i} className={"strip-item" + (playIdx === i ? " playing" : "")}>
                 <span className="schord">{c.name}</span>
                 <span className="ssub">{c.sub}</span>
               </div>
@@ -258,6 +337,9 @@ export default function KeyBridge() {
         </div>
         {strip.length > 0 && (
           <div className="strip-actions">
+            <button className="play-btn" onClick={play} aria-pressed={playing}>
+              {playing ? "■ Stop" : "▶ Play it"}
+            </button>
             <button className="mini-btn" onClick={() => setStrip((s) => s.slice(0, -1))}>Undo</button>
             <button className="mini-btn" onClick={() => setStrip([])}>Clear</button>
           </div>
@@ -314,6 +396,10 @@ h1 { font-family: var(--font-display); font-weight: 650; font-size: clamp(30px, 
 .schord { font-size: 16px; font-weight: 700; }
 .ssub { font-family: var(--font-mono); font-size: 9.5px; color: var(--amber); white-space: nowrap; }
 .strip.big { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-height: 62px; gap: 16px; }
+.strip-item.playing { border-color: var(--amber); background: color-mix(in srgb, var(--amber) 20%, var(--panel2)); }
+.play-btn { background: var(--amber); color: #1A130E; border: none; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.play-btn:hover { filter: brightness(1.06); }
+.play-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 .builder { max-width: 1100px; display: flex; flex-direction: column; gap: 12px; }
 .palettes { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: start; }
