@@ -33,6 +33,14 @@ const AuthContext = createContext({
   ready: true,
 });
 
+/* Order-independent serialization so a cloud/local comparison does not trip on
+   key ordering. Used to decide whether the cloud has genuinely newer data. */
+function stableStr(obj) {
+  if (!obj) return "";
+  const keys = Object.keys(obj).sort();
+  return JSON.stringify(keys.map((k) => [k, obj[k]]));
+}
+
 export function AuthProvider({ children }) {
   const supabase = getSupabase();
   const [user, setUser] = useState(null);
@@ -59,10 +67,13 @@ export function AuthProvider({ children }) {
     }
   }, [supabase]);
 
-  const syncOnLogin = useCallback(
+  // Pull cloud state on sign-in AND on load (so changes made on another device
+  // show up here). Runs once per page load. Only reloads when the cloud data
+  // genuinely differs from local, so a same-device visit never flashes.
+  const syncFromCloud = useCallback(
     async (u) => {
       if (!supabase || !u || syncedRef.current) return;
-      syncedRef.current = true; // run once per page load
+      syncedRef.current = true;
       try {
         const { data, error } = await supabase
           .from("user_state")
@@ -74,18 +85,20 @@ export function AuthProvider({ children }) {
             ? data.data
             : null;
         if (cloud) {
-          applyAll(cloud);
-          // Reflect synced data once. The sessionStorage guard prevents an
-          // extra reload if SIGNED_IN fires again after the reload.
-          if (
-            typeof window !== "undefined" &&
-            !window.sessionStorage.getItem("fw_synced")
-          ) {
-            window.sessionStorage.setItem("fw_synced", "1");
-            window.location.reload();
+          if (stableStr(cloud) !== stableStr(snapshotAll())) {
+            applyAll(cloud);
+            // Reload once so every provider re-reads the adopted data. The
+            // sessionStorage guard prevents any repeat if the event refires.
+            if (
+              typeof window !== "undefined" &&
+              !window.sessionStorage.getItem("fw_synced")
+            ) {
+              window.sessionStorage.setItem("fw_synced", "1");
+              window.location.reload();
+            }
           }
         } else {
-          // First sign-in on this account: seed the cloud from local data.
+          // First time on this account: seed the cloud from local data.
           await pushState();
         }
       } catch {
@@ -95,14 +108,17 @@ export function AuthProvider({ children }) {
     [supabase, pushState]
   );
 
-  // Runs once (all deps are stable): track the session and sync on sign-in.
+  // Runs once (all deps are stable): track the session, pull cloud on load,
+  // and sync on a fresh sign-in.
   useEffect(() => {
     if (!supabase) return;
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
-      setCurrentUser(data.session?.user ?? null);
+      const u = data.session?.user ?? null;
+      setCurrentUser(u);
       setReady(true);
+      if (u) syncFromCloud(u); // already signed in: adopt any changes from other devices
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       setCurrentUser(session?.user ?? null);
@@ -113,14 +129,14 @@ export function AuthProvider({ children }) {
             .catch(() => {});
           removeKey("pendingOptIn");
         }
-        syncOnLogin(session.user);
+        syncFromCloud(session.user);
       }
     });
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
     };
-  }, [supabase, syncOnLogin, setCurrentUser]);
+  }, [supabase, syncFromCloud, setCurrentUser]);
 
   // Push local changes up (debounced). pushState no-ops when not signed in.
   useEffect(() => {
