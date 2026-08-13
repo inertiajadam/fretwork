@@ -14,6 +14,17 @@ export default function NotFound() {
         <Link href="/tools">Browse the tools</Link> or head back to the{" "}
         <Link href="/">home page</Link>.
       </p>
+      <p className={styles.muted}>
+        Lost for good? Here is a song that is{" "}
+        <a
+          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          never gonna give you up
+        </a>
+        . 🎸
+      </p>
     </article>
   );
 }
