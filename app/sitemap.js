@@ -2,6 +2,8 @@ import { TOOLS } from "@/lib/site";
 import { LESSONS } from "@/lib/learnContent";
 import { GUIDES } from "@/lib/guides";
 import { ALL_CHORDS } from "@/lib/chords";
+import { ALL_SCALES } from "@/lib/scales";
+import { ALL_KEYS } from "@/lib/keys";
 import { absoluteUrl } from "@/lib/seo";
 
 /* Generated sitemap covering every real route. Driven by the registries, */
@@ -13,6 +15,8 @@ export default function sitemap() {
     { path: "/", priority: 1.0, changeFrequency: "weekly" },
     { path: "/tools", priority: 0.9, changeFrequency: "weekly" },
     { path: "/chords", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/scales", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/keys", priority: 0.9, changeFrequency: "weekly" },
     { path: "/guides", priority: 0.9, changeFrequency: "weekly" },
     { path: "/learn", priority: 0.8, changeFrequency: "weekly" },
     { path: "/about", priority: 0.4, changeFrequency: "monthly" },
@@ -43,12 +47,26 @@ export default function sitemap() {
     changeFrequency: "monthly",
   }));
 
+  const scaleRoutes = ALL_SCALES.map((s) => ({
+    path: `/scales/${s.slug}`,
+    priority: 0.6,
+    changeFrequency: "monthly",
+  }));
+
+  const keyRoutes = ALL_KEYS.map((k) => ({
+    path: `/keys/${k.slug}`,
+    priority: 0.6,
+    changeFrequency: "monthly",
+  }));
+
   return [
     ...staticRoutes,
     ...toolRoutes,
     ...lessonRoutes,
     ...guideRoutes,
     ...chordRoutes,
+    ...scaleRoutes,
+    ...keyRoutes,
   ].map((r) => ({
     url: absoluteUrl(r.path),
     lastModified: now,
