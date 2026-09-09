@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "The 12 bar blues is the most common form in popular music, and it is one of the first things worth learning after your open chords. It is a repeating 12-measure pattern built from just three chords: the I, the IV, and the V of a key. Learn it once by number and you can play it in any key on the guitar.",
+    "The 12 bar blues is a repeating 12-measure chord progression built from just three chords, the I, the IV, and the V of a key, and it is the most common form in popular music. It is one of the first things worth learning after your open chords, and because it is defined by number rather than by specific letters, you learn it once and can play it in any key on the guitar.",
     "This guide walks through what the form is, the standard bar-by-bar layout, how it looks in a concrete key, the feel and the chords that give it its sound, and the turnaround that sends it around again. You can hear all of it with Fretwork's free Progression Player, which has a 12-bar blues preset in every key.",
   ],
   sections: [

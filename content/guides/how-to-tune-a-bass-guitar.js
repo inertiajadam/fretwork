@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Tuning a bass is simple once you know the notes and have a way to check your pitch. The strings are thick and low, which is part of what makes a bass feel so grounding, but it also means some notes sit below what many phone tuners can read. This guide walks through standard tuning for the 4, 5, and 6 string bass, covers drop D, and shows you how to tune both by ear and with a tuner.",
-    "You can follow along with Fretwork's free mic tuner, which supports bass and lets you tap any string to hear its pitch first.",
+    "To tune a bass guitar to standard tuning, set the four strings from thickest to thinnest to E, A, D, and G, the same note names as a guitar's bottom four strings but sounding one octave lower; a 5-string adds a low B below them, and a 6-string adds a high C on top. The strings are thick and low, which is part of what makes a bass feel so grounding, though it also means some notes sit below what many phone tuners can read.",
+    "This guide walks through standard tuning for the 4, 5, and 6 string bass, covers drop D, and shows how to tune both by ear and with Fretwork's free mic tuner, which reads that low B and lets you tap any string to hear its pitch first.",
   ],
   sections: [
     {

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Most of us learn guitar with our eyes: shapes, diagrams, dots on a screen. Ear training is the other half, the part that lets you hear a song and find it, catch a chord change before it lands, and play a line you only imagined a second ago. It is a skill, not a gift, and it responds to steady practice like any other.",
+    "Ear training for guitarists is the practice of learning to recognize intervals, chords, and progressions by sound, so you can hear a song and find it, catch a chord change before it lands, and play a line you only imagined a second ago. Most of us learn guitar with our eyes: shapes, diagrams, dots on a screen. This is the other half, and it is a skill, not a gift, that responds to steady practice like any other.",
     "This guide covers why ear training is worth your time, the three things worth training first, how to start without getting overwhelmed, and what honest progress looks like along the way. Fretwork's free Ear Trainer is built to walk each step with you.",
   ],
   sections: [

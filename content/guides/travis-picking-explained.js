@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Travis picking is one of those techniques that sounds far harder than it is. Named after country guitarist Merle Travis, it is a fingerstyle pattern where your thumb keeps a steady alternating bass line going while your fingers add melody notes on top. Done well, it sounds like two guitar parts at once, even though it is one pair of hands.",
+    "Travis picking is a fingerstyle technique where your thumb keeps a steady alternating bass on the low strings while your fingers add melody notes on top, creating the full, self-accompanied sound heard across folk and country. Named after country guitarist Merle Travis, it sounds far harder than it is. Done well, one pair of hands ends up sounding like two guitar parts at once.",
     "This guide explains what Travis picking actually is, why it creates that full two-part sound, and how to build it up one small piece at a time. A steady tempo is everything here, so keep Fretwork's free Metronome open while you practice.",
   ],
   sections: [

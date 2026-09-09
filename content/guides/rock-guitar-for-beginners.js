@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Rock guitar sounds big and complicated from the outside, but the parts that make it work are small and learnable. You do not need fast fingers or years of theory. You need a handful of movable shapes, a steady right hand, and a little distortion to glue it together.",
+    "Rock guitar for beginners is built from a few small, movable pieces: power chords you can slide anywhere, a steady picking hand with palm muting and downstrokes, simple riffs on the low strings, the minor pentatonic for soloing, and a little distortion to glue it together. It sounds big and complicated from the outside, but those parts are small and learnable, and you do not need fast fingers or years of theory to begin.",
     "This guide walks you through a real beginner path: power chords and how to move them, palm muting and downstroke drive, simple riffs built on the low strings, the minor pentatonic for soloing, and basic tone. You can open Fretwork's free Chord Library and Fretboard Explorer alongside it to see every shape.",
   ],
   sections: [

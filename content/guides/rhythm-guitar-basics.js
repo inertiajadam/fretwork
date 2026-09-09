@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Most of the guitar playing that people actually hear is rhythm guitar. It is the steady, driving part underneath the melody: the strumming and chording that gives a song its pulse, its feel, and its forward motion. Lead lines get the attention, but rhythm guitar is what holds the whole thing together.",
+    "Rhythm guitar is the job of keeping time and outlining the harmony underneath a song: the steady strumming and chording that gives the music its pulse, its feel, and its forward motion. It is most of the guitar playing people actually hear. Lead lines get the attention, but rhythm guitar is what holds the whole thing together, and doing it well comes down to steady time far more than fancy chords.",
     "This guide covers what rhythm guitar is, why it matters, and the core skills that separate a player who keeps time from one who just knows chords. You can practice every one of these alongside Fretwork's free Metronome.",
   ],
   sections: [

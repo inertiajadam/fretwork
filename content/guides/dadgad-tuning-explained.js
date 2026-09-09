@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "DADGAD is one of the most loved alternate tunings on the guitar, and for good reason. Spelled D A D G A D from the lowest string to the highest, it trades the bright, settled sound of standard tuning for something open, ringing, and a little mysterious. It is neither clearly major nor clearly minor, which is exactly why so many players reach for it.",
+    "DADGAD tuning takes the sixth, second, and first strings of standard tuning down a whole step, giving D, A, D, G, A, D from low to high, which rings out as an open, suspended sound that is neither clearly major nor clearly minor. It trades the bright, settled sound of standard tuning for something open, ringing, and a little mysterious, which is exactly why so many players reach for it.",
     "This guide explains what DADGAD is, why it sounds the way it does, what it is good for, and how to tune into it from standard using Fretwork's free tuner.",
   ],
   sections: [

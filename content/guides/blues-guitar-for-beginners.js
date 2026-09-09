@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Blues is one of the friendliest places to start on guitar because so much of it comes from a small set of ideas that keep repeating. Learn one chord progression, one scale, and one rhythmic feel, and you already have enough to play along and start sounding like yourself.",
+    "Blues guitar for beginners comes down to a small set of core pieces that keep repeating: the 12-bar blues progression, dominant seventh chords, the minor pentatonic and blues scales, the shuffle feel, and expressive touches like bends and slides. That repetition is what makes blues one of the friendliest places to start on guitar. Learn one progression, one scale, and one rhythmic feel, and you already have enough to play along and start sounding like yourself.",
     "This guide walks through the core pieces in order: the 12-bar form, the chords that fill it, the scales that sit on top, the shuffle feel that drives it, and the small expressive moves that make a single note feel alive. You can practice the progressions with Fretwork's free Progression Player and map every note with the Fretboard Explorer.",
   ],
   sections: [

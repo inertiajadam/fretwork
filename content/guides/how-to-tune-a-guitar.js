@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "A guitar that is even slightly out of tune makes everything you play sound wrong, no matter how clean your fingers are. The good news is that tuning is a quick, learnable skill, and once you understand what you are aiming for it takes under a minute.",
+    "To tune a guitar to standard tuning, set the six strings from thickest to thinnest to E, A, D, G, B, and E, using a clip-on or app tuner, a reference pitch, or the 5th-fret method by ear. A guitar that is even slightly out of tune makes everything you play sound wrong, no matter how clean your fingers are, but tuning is a quick, learnable skill that takes under a minute once you know what you are aiming for.",
     "This guide covers standard tuning, three reliable ways to get there, why guitars drift out of tune in the first place, and one small habit that keeps your tuning stable for longer.",
   ],
   sections: [

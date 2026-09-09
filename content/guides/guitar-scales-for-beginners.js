@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Scales can sound like a technical chore, but they are really just the notes that a piece of music draws from. Once you understand what a scale is and how a few of them sit on the neck, a lot of the guitar starts to make sense: why certain chords go together, why a solo stays in key, and where to put your fingers when you improvise.",
+    "A guitar scale is simply the set of notes a piece of music draws from, and beginners are best served by learning just three: the minor pentatonic, the major scale, and the natural minor. Scales can sound like a technical chore, but once you understand what a scale is and how a few of them sit on the neck, a lot of the guitar starts to make sense: why certain chords go together, why a solo stays in key, and where to put your fingers when you improvise.",
     "This guide keeps it simple: what a scale is, the three scales worth learning first, how scales connect to chords and keys, and how to practice them so the work sticks. You can follow along with Fretwork's free Fretboard Explorer and Metronome.",
   ],
   sections: [

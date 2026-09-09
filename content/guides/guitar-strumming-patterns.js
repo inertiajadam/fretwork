@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Chords are only half of rhythm guitar. The other half is your strumming hand, and it is the part that makes a song feel alive or feel stiff. Good strumming is less about fancy patterns and more about a steady, relaxed hand that keeps time on its own.",
+    "A guitar strumming pattern is a repeating sequence of down strokes and up strokes played in time, and the ones that sound good come less from fancy sequences than from a steady, relaxed hand that keeps the beat on its own. Chords are only half of rhythm guitar. Your strumming hand is the other half, and it is the part that makes a song feel alive instead of stiff.",
     "This guide walks through the basics of guitar strumming patterns: down strokes and up strokes, how to count them, why your hand should keep moving even when it does not touch the strings, and a couple of common patterns you can use right away. Keep Fretwork's free Metronome open beside you and practice each one slowly.",
   ],
   sections: [

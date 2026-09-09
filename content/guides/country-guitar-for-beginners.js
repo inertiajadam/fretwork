@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Country guitar sounds harder than it is. Most of the classic sound comes from a handful of open chords, a steady rhythm, and a few small tricks that you can pick up in an afternoon. You do not need fast fingers or expensive gear to get started.",
+    "Country guitar for beginners is built from a handful of open chords in guitar-friendly keys (G, C, D, and A), a steady boom-chuck rhythm, and the major pentatonic scale for simple licks, with small tricks like hybrid picking adding the twang. It sounds harder than it is: most of the classic sound comes from those few pieces, which you can pick up in an afternoon, and you do not need fast fingers or expensive gear to get started.",
     "This guide walks through the common keys, the boom-chuck rhythm that drives the whole style, the major pentatonic scale for simple licks, and gentle first steps into hybrid picking and fingerpicking. Fretwork's free Fretboard Explorer and Progression Player are handy companions along the way.",
   ],
   sections: [

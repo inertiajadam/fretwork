@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Fingerstyle guitar is the art of plucking the strings directly with your thumb and fingers instead of strumming with a pick. It sounds fuller than it looks, because your thumb can hold down a steady bass while your fingers add the higher notes on top. One player, one guitar, and it feels like two parts at once.",
-    "This guide gives you a plain starting point: the names for your picking fingers, how to assign each finger to a set of strings, and one simple alternating bass pattern you can build for weeks. Work through it slowly with Fretwork's free Metronome and you will feel it lock in.",
+    "Fingerstyle guitar is the art of plucking the strings directly with your thumb and fingers instead of strumming with a pick, so your thumb can hold a steady bass while your fingers add the higher notes on top. It sounds fuller than it looks: one player and one guitar end up feeling like two parts at once. To begin, you only need the names for your picking fingers, a home string for each one, and a single simple alternating bass pattern.",
+    "This guide gives you that plain starting point: the names for your picking fingers, how to assign each finger to a set of strings, and one simple alternating bass pattern you can build for weeks. Work through it slowly with Fretwork's free Metronome and you will feel it lock in.",
   ],
   sections: [
     {

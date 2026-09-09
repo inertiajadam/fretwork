@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Soloing can feel like a mystery, as if the good players know a secret you were never handed. They do not. A guitar solo is just a small set of notes, chosen with care and played with feeling, over chords that are moving underneath you. You already have everything you need to start.",
-    "This guide lays out a beginner path you can actually walk: learn one scale shape, play it over a backing track, aim for the right notes on the strong beats, leave space, and add expression. You can open Fretwork's free Fretboard Explorer for the shapes and the Progression Player for tracks to solo over as you read.",
+    "To solo on guitar, you learn one pentatonic scale shape, play it over a backing track in the same key, aim for chord tones on the strong beats, leave space between phrases, and add expression with bends and vibrato. Soloing can feel like a mystery, as if the good players know a secret you were never handed, but they do not: a solo is just a small set of notes, chosen with care and played with feeling, and you already have everything you need to start.",
+    "This guide lays out that beginner path step by step, and you can open Fretwork's free Fretboard Explorer for the shapes and the Progression Player for tracks to solo over as you read.",
   ],
   sections: [
     {

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Drop D is the friendliest alternate tuning on the guitar. You change one string, keep the other five exactly where they are, and suddenly a whole range of heavier, easier riffs opens up. It is the first tuning most players try after standard, and for good reason.",
+    "Drop D tuning lowers only the sixth string, the thick low E, down a whole step to D, giving D, A, D, G, B, E from low to high; it puts a heavier low root under your riffs and lets you play a power chord on the bottom three strings with one finger. You change one string, keep the other five exactly where they are, and a whole range of heavier, easier riffs opens up, which is why it is the first tuning most players try after standard.",
     "This guide explains what Drop D is, why so many players reach for it, how to tune into it by ear or with a tuner, and how to get back to standard cleanly. You can follow along with Fretwork's free tuner, which has a Drop D setting built in.",
   ],
   sections: [

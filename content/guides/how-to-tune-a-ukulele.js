@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "A ukulele that is even slightly out of tune sounds sour no matter how clean your chords are, so tuning is the first skill worth getting right. The good news is that most ukuleles use one simple tuning, and once you know the note names and one quirk about the top string, you can tune quickly and trust your ears.",
+    "To tune a ukulele in standard tuning, set the four strings from the one nearest your chin to the one nearest the floor to g, C, E, and A, where the top g is tuned high (reentrant) rather than low. A ukulele that is even slightly out of tune sounds sour no matter how clean your chords are, so tuning is the first skill worth getting right, and it is easy once you know the note names and that one quirk about the top string.",
     "This guide covers the three tunings you are most likely to meet: standard gCEA, low-G, and baritone DGBE. It also explains the reentrant setup that makes a ukulele sound like a ukulele, and how Fretwork's free online tuner helps you land each string.",
   ],
   sections: [

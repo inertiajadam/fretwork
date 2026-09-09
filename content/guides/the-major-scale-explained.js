@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "The major scale is the most familiar sound in Western music. It is the do re mi re mi you sang in school, the run of notes that feels bright, settled, and complete. Almost every melody you know leans on it, so learning it is less about memorizing something new and more about naming something your ear already trusts.",
+    "The major scale is a seven note scale built from a fixed pattern of steps (whole, whole, half, whole, whole, whole, half), and it is the bright do re mi sound behind most songs you know. It is the run of notes you sang in school, the one that feels settled and complete. Almost every melody you know leans on it, so learning it is less about memorizing something new and more about naming something your ear already trusts.",
     "This guide explains what the major scale is, the simple pattern of steps that builds it, how it defines a key and its seven scale degrees, and how to play it on the guitar as one movable shape. You can follow along with Fretwork's free Fretboard Explorer and its scale overlays.",
   ],
   sections: [

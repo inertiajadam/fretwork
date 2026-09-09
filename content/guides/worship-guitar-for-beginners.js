@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Playing worship guitar in a church band is less about flashy skill and more about serving the song and the people singing it. If you can strum a handful of open chords and keep time, you already have most of what you need to start. The rest is knowing a few band habits: matching the singer's key, reading the charts everyone uses, and playing parts that leave room for the room.",
+    "Worship guitar for beginners is less about flashy skill and more about serving the song and the people singing it: you need only a handful of open chords, steady time, and a few band habits like matching the singer's key with a capo, reading Nashville number charts, and playing parts that leave room. If you can strum a few open shapes and keep time, you already have most of what you need to start, and the rest is knowing those band habits and leaving space for the room.",
     "This guide walks through the practical basics, and points you to two free Fretwork tools that make the setup part quick: the Capo Calculator and the Nashville Number Trainer.",
   ],
   sections: [

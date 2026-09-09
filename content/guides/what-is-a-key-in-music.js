@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "You have probably heard someone say a song is in the key of G, or that two songs are in different keys. But what does a key actually describe? At its simplest, a key is a home base: one note that a piece of music keeps coming back to, along with the scale built on that note and the family of chords that scale produces.",
+    "A key in music is the home note a song keeps coming back to, along with the scale built on that note and the family of chords that scale produces. You have probably heard someone say a song is in the key of G, or that two songs are in different keys; that home base is what they are describing. Think of it as one note that acts as the center of gravity, the place the music wants to rest.",
     "This guide explains what a key is, how major and minor keys feel different, how to figure out the key of a song you are learning, and why knowing the key makes finding the right chords and scales so much easier.",
   ],
   sections: [

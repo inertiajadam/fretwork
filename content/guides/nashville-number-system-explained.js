@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Session players in Nashville needed a way to write a song down once and play it in whatever key the singer wanted, sometimes minutes before the tape rolled. Their answer was to stop writing chord letters altogether and write numbers instead. The Nashville Number System is that shorthand, and it is one of the most practical things a guitarist can learn.",
+    "The Nashville Number System is a shorthand that writes each chord as a scale degree from 1 to 7 instead of a letter name, so a single chart can be played in any key. Session players invented it so they could write a song down once and play it in whatever key the singer wanted, sometimes minutes before the tape rolled. It is one of the most practical things a guitarist can learn.",
     "This guide explains what the numbers mean, how they map to real chords in a major key, how to read a simple chart, and how to transpose a song to a new key on the fly. There is also a free Nashville Number Trainer you can open alongside it.",
   ],
   sections: [

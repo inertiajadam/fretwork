@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Jazz guitar has a reputation for being difficult, and a lot of that reputation is earned by the fast solos and dense chords you hear from the masters. The starting point, though, is much friendlier than it looks. If you can already play a few chords and keep time, you have almost everything you need to make your first jazz sounds.",
-    "This guide is a gentle on-ramp. We will cover seventh chords and simple extensions, easy shell voicings you can grab with two or three fingers, the famous two five one progression, and how to comp (play rhythm chords) with space. Along the way, Fretwork's free Chord Library and Circle of Fifths give you a place to see and hear everything.",
+    "Jazz guitar for beginners starts with far friendlier pieces than the fast solos and dense chords suggest: seventh chords, easy shell voicings you can grab with two or three fingers, the two five one progression, and comping with plenty of space. The reputation for difficulty is earned by the masters, but the starting point is much more welcoming than it looks. If you can already play a few chords and keep time, you have almost everything you need to make your first jazz sounds.",
+    "This guide is a gentle on-ramp, covering seventh chords and simple extensions, easy shell voicings you can grab with two or three fingers, the famous two five one progression, and how to comp (play rhythm chords) with space. Along the way, Fretwork's free Chord Library and Circle of Fifths give you a place to see and hear everything.",
   ],
   sections: [
     {

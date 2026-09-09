@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Open G tuning retunes your guitar so that strumming the open strings gives you a full G major chord. Nothing fretted, nothing fancy: just six strings ringing out as one bright, resonant chord.",
+    "Open G tuning retunes your guitar to D, G, D, G, B, D from low to high, so the six open strings spell a G major chord that rings out when you strum without fretting a thing. Nothing fretted, nothing fancy: just six strings sounding one bright, resonant chord.",
     "This guide explains what Open G is, why so many blues, folk, and slide players love it, how to tune into it from standard, and how it quietly changes the way chords work under your fingers. Fretwork's free tuner includes Open G, so you can follow along string by string.",
   ],
   sections: [

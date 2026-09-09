@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "A basic chord has three notes. A seventh chord has four. That single extra note is the difference between a plain, blocky sound and something richer: bluesy, dreamy, or smooth, depending on which seventh you add. Once you hear it, you cannot unhear it.",
+    "A seventh chord is a four-note chord: an ordinary three-note triad with one more note, the seventh, stacked on top, and that single extra note is what turns a plain, blocky sound into something richer, whether bluesy, dreamy, or smooth. Which seventh you add is what decides the mood, and once you hear that color you cannot unhear it.",
     "This guide explains what a seventh chord is, how it is built from a scale, and the three you will meet first: the dominant seventh, the major seventh, and the minor seventh. You can open Fretwork's free Chord Library alongside to see each voicing with its notes and intervals labeled.",
   ],
   sections: [

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Standard tuning is where almost everyone starts, and it will carry you a long way. But at some point you hear a song that rings in a way your guitar just will not, and the reason is usually simple: the player retuned the strings. That is what alternate guitar tunings are, and they open up sounds that are hard or impossible to reach in standard.",
+    "Alternate guitar tunings are any tuning other than standard EADGBE, reached by retuning one or more strings to open up sounds that are hard or impossible to reach in standard, from Drop D and open tunings to DADGAD and half step down. Standard tuning is where almost everyone starts and will carry you a long way, but at some point you hear a song that rings in a way your guitar just will not, and the reason is usually that the player retuned the strings.",
     "This guide walks through the tunings you will meet most often, what each one is good for, and how to change tunings without hurting your guitar or your ears. You can follow along with Fretwork's free tuner, which already includes every tuning below.",
   ],
   sections: [

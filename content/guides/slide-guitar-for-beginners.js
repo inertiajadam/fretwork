@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Slide guitar is the vocal, singing sound you hear when a note glides smoothly from one pitch to another instead of jumping fret to fret. It is made with a small tube, called a slide, worn on one finger and rested lightly on the strings. The technique looks mysterious, but the first steps are simple, and you can get a real slide sound today.",
-    "This guide covers what a slide is, which finger to wear it on, the open tunings that make slide easier, and the one habit that keeps your notes in tune.",
+    "Slide guitar is the vocal, singing sound you get when a note glides smoothly from one pitch to another instead of jumping fret to fret, made with a small tube (the slide) worn on one finger and rested lightly on the strings. The technique looks mysterious, but the first steps are simple: pick a slide, choose a finger to wear it on, try an open tuning, and rest the slide over the fret wire so your notes stay in tune. You can get a real slide sound today.",
+    "This guide covers what a slide is, which finger to wear it on, the open tunings that make slide easier (Fretwork's free Tuner includes them so you can match each string), and the one habit that keeps your notes in tune.",
   ],
   sections: [
     {

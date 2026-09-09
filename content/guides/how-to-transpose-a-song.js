@@ -10,8 +10,8 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Transposing a song means moving the entire thing to a new key. Every chord, note, and melody shifts up or down by the same distance, so the song sounds identical in shape and feeling; it just sits higher or lower than before. The relationships between the chords never change, which is why a transposed song still sounds like itself.",
-    "You usually transpose for one of two reasons: to fit a singer's range so the melody is comfortable instead of a strain, or to make the chords easier to play under your fingers. This guide walks through what transposing really is, the three practical ways to do it, and a full worked example, with Fretwork's free Capo Calculator and Nashville Number Trainer to help along the way.",
+    "To transpose a song, you move every chord, note, and melody by the same distance to a new key, so the song keeps its exact shape and feeling and simply sits higher or lower than before. The relationships between the chords never change, which is why a transposed song still sounds like itself. You usually do it for one of two reasons: to fit a singer's range so the melody is comfortable instead of a strain, or to make the chords easier to play under your fingers.",
+    "This guide walks through what transposing really is, the three practical ways to do it, and a full worked example, with Fretwork's free Capo Calculator and Nashville Number Trainer to help along the way.",
   ],
   sections: [
     {

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "If you can play open chords but the rest of the neck still looks like a wall of random dots, the CAGED system is the map you have been missing. It is not a new technique or a secret scale. It is a way of seeing: the whole fretboard is just five chord shapes you already know, repeated in every key.",
+    "The CAGED system is a way of seeing the entire guitar neck as five movable chord shapes, the open C, A, G, E, and D chords you already know, repeating in the same order in every key. It is not a new technique or a secret scale. If you can play open chords but the rest of the neck still looks like a wall of random dots, this is the map you have been missing.",
     "This guide explains what CAGED is, why it works, and how to start using it today, with an interactive Fretboard Explorer you can open alongside it.",
   ],
   sections: [

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "A metronome is the least glamorous tool in your case and one of the most useful. It clicks at a steady tempo and asks one honest question every beat: are you actually where you think you are? Most players who feel stuck are not missing talent. They are missing steady time, and a metronome is how you build it.",
+    "To practice guitar with a metronome, set it to a tempo slow enough that you can play a passage cleanly, lock every note to the steady click, then raise the tempo in small steps only once the passage is comfortable and mistake-free. A metronome is the least glamorous tool in your case and one of the most useful, because most players who feel stuck are not missing talent. They are missing steady time, and this is how you build it.",
     "This guide covers why steady time is worth the work, how to use a metronome so it actually helps, the basics of beats and subdivisions, and the mistakes that quietly hold people back. You can follow along with Fretwork's free Metronome and Speed Builder as you read.",
   ],
   sections: [

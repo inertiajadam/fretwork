@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "A capo is a small clamp that bars every string at one fret so your open shapes ring out in a higher key. It looks like a shortcut, and in a way it is, but it is also a real tool that changes the sound and reach of the guitar. Used well, it turns awkward keys into familiar ones and lets two guitars weave around each other.",
+    "A capo is a small clamp that bars all six strings at a chosen fret, raising the pitch of the whole guitar so you can play in a higher key using the same open chord shapes. It looks like a shortcut, and in a way it is, but it is also a real tool that changes the sound and reach of the guitar. Used well, it turns awkward keys into familiar ones and lets two guitars weave around each other.",
     "This guide covers what a capo actually does, how to place it, how to pick the right fret for a key, and the moments when leaving it off is the better call. Fretwork's free Capo Calculator does the math for you, and this walks through the thinking behind it.",
   ],
   sections: [

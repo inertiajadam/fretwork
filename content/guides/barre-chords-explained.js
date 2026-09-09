@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Barre chords are the moment the guitar stops being a handful of open chords and becomes the whole neck. The idea is simple even if the fingers take a while to agree: you lay your first finger flat across the strings so it acts like a movable nut, then you build a familiar chord shape behind it. Slide the whole thing up or down and you have a new chord in the same shape.",
+    "A barre chord is a chord you play by laying your first finger flat across the strings so it acts like a movable nut, then building a familiar open shape behind it, which lets you slide that one shape up or down the neck to get a new chord at every fret. It is the moment the guitar stops being a handful of open chords and becomes the whole neck, and though the fingers take a while to agree, the idea itself is simple.",
     "This guide explains what a barre chord really is, walks through the two workhorse shapes (E shape and A shape), shows how they fit the CAGED system, and gives honest tips for getting them to ring clean. You can open Fretwork's free Chord Library and Fretboard Explorer alongside it to see and hear every shape.",
   ],
   sections: [

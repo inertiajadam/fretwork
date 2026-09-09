@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "The circle of fifths looks like a clock, and that is a good way to think about it. It arranges all twelve musical keys in a ring so that the ones closest together sound the most closely related. Once you can read it, a lot of guitar theory that felt like memorization turns into something you can just see.",
+    "The circle of fifths is a diagram that arranges the twelve musical keys in a ring, each one a fifth apart from its neighbors, so that keys sitting close together share the most notes and chords. It looks like a clock, and that is a good way to think about it. Once you can read it, a lot of guitar theory that felt like memorization turns into something you can just see.",
     "This guide explains what the circle is, how to read key signatures and chords from it, and how to actually use it when you play, with Fretwork's free interactive Circle of Fifths tool you can open alongside.",
   ],
   sections: [

@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "The relative minor is one of those ideas that sounds technical and turns out to be simple. Every major key has a minor twin that uses the exact same notes, just starting in a different place. Learn the pair once and you get two keys, two moods, and a set of shapes that work in both, for the price of one.",
+    "The relative minor is the minor key that shares the exact same notes and key signature as a given major key, built starting on the sixth note of that major scale. It is one of those ideas that sounds technical and turns out to be simple: every major key has a minor twin that uses the very same notes, just starting in a different place. Learn the pair once and you get two keys, two moods, and a set of shapes that work in both, for the price of one.",
     "This guide explains what the relative minor is, two quick ways to find it, and why it is so useful in real playing. You can follow along with Fretwork's free Circle of Fifths, where every major key sits right next to its relative minor.",
   ],
   sections: [

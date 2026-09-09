@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "A power chord is the simplest heavy sound on the guitar, and it is probably the first movable shape most rock players ever learn. It is not really a full chord at all: it is just two notes, the root and the fifth, often with the root repeated an octave higher for extra weight.",
+    "A power chord is a two-note chord built from just the root and the fifth, with no third, which is what makes it sound neither major nor minor and lets it handle heavy distortion cleanly. It is the simplest heavy sound on the guitar and probably the first movable shape most rock players ever learn, often with the root repeated an octave higher for extra weight.",
     "This guide covers what a power chord is, the shapes rooted on the low E and A strings, why they slide freely up the neck, why they carry so much rock music, and how palm muting shapes their sound. You can hear and see every note using Fretwork's free Chord Library and Fretboard Explorer.",
   ],
   sections: [

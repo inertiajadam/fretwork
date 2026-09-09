@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 6,
   intro: [
-    "Almost every chord you will ever learn is drawn the same way: as a small grid of lines and dots called a chord diagram, or chord box. Once you can read one, you can pick up nearly any song book, website, or app and know exactly where to put your fingers.",
+    "A chord diagram is a small grid that maps a section of the guitar neck: the vertical lines are the strings, the horizontal lines are the frets, dots show where to press, and O and X marks above the grid tell you which strings to play open and which to leave silent. Almost every chord you will ever learn is drawn this way, so once you can read one you can pick up nearly any song book, website, or app and know exactly where to put your fingers.",
     "This guide walks through every part of a chord diagram in plain language, then points you to Fretwork's free Chord Library, where you can see real chords drawn as diagrams with their notes and intervals labeled.",
   ],
   sections: [

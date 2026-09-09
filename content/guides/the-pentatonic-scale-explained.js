@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "If you want to solo or improvise on guitar and do not know where to start, the pentatonic scale is the answer almost every player reaches first. The name simply means five notes: penta for five, tonic for tone. Instead of the seven notes of a full major or minor scale, you keep the five that sound the most reliable, and the two trickiest ones are gone.",
+    "The pentatonic scale is a five note scale (penta means five) that trims a full major or minor scale down to its most reliable notes, dropping the two most likely to clash. That is why it is the answer almost every player reaches for when they want to solo or improvise and do not know where to start: what is left sounds good over almost anything.",
     "This guide explains what the pentatonic scale is, how the minor and major versions are built, why it is so forgiving to solo with, and how the shapes connect up the neck. You can follow along with Fretwork's free Fretboard Explorer and see the notes light up as you read.",
   ],
   sections: [

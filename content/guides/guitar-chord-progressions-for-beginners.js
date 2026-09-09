@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "A chord progression is just a small group of chords played in a repeating order. Learn to see progressions as patterns instead of a random list of chords, and suddenly you can play along with a huge share of popular music using only a handful of shapes.",
+    "A chord progression is a small group of chords played in a repeating order, and once you learn to see progressions as patterns instead of a random list of chords, you can play along with a huge share of popular music using only a handful of shapes. Naming those chords by number rather than by letter is the trick that lets a single pattern work in any key.",
     "This guide covers what a progression is, two patterns that cover an enormous amount of songs, why they sound good, and how to practice them so they feel natural. You can loop every example in any key with Fretwork's free Progression Player as you read.",
   ],
   sections: [

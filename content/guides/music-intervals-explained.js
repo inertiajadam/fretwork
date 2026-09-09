@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "An interval is the single most useful idea in music theory, and most players never learn it directly. It is just the distance between two notes. Once you can hear and name that distance, chords stop being shapes you memorize and start being sounds you understand.",
+    "In music, an interval is the distance in pitch between two notes, measured in half steps and named by how many letters it spans, such as a major third or a perfect fifth. It is the single most useful idea in music theory, and most players never learn it directly. Once you can hear and name that distance, chords stop being shapes you memorize and start being sounds you understand.",
     "This guide walks through what an interval is, the names for every step from a minor second up to the octave, the difference between playing two notes together or one after the other, and how to start recognizing intervals by ear with a few reliable reference points.",
   ],
   sections: [

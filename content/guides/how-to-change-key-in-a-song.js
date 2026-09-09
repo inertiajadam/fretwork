@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Changing key, or modulation, is one of the oldest tricks for keeping a song from going stale. Done well, it lifts a final chorus or opens a new section without the listener ever thinking about theory. Done carelessly, it just sounds like the whole band jumped.",
+    "To change key in a song, you move its center of gravity to a new home note, either by bumping the whole song up a step, leading in with the new key's dominant chord, or using a pivot chord that belongs to both keys. Changing key, also called modulation, is one of the oldest tricks for keeping a song from going stale. Done well, it lifts a final chorus or opens a new section without the listener ever thinking about theory; done carelessly, it just sounds like the whole band jumped.",
     "This guide walks through what a key change actually is, the common ways to make one, what a pivot chord does, and how to make any modulation feel smooth. Fretwork's free Key Bridge tool can do the pivot math for you, but the ideas here are simple enough to hear and understand on your own.",
   ],
   sections: [

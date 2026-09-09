@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Playing by ear sounds like a gift some people are born with, but it is really a set of skills you can build one step at a time. The goal is simple: hear a piece of music and work out how to play it without reading a single chart. That takes practice, and it takes a little patience with yourself, but the path is clear and anyone can walk it.",
+    "Playing guitar by ear means working out music by sound alone, finding the key, the chords, and the melody notes without reading a single chart, and it is a set of skills you can build one step at a time rather than a gift some people are born with. The goal is simple, and while it takes practice and a little patience with yourself, the path is clear and anyone can walk it.",
     "This guide gives you a practical order to work in: find the key first, learn to hear chord progressions by number, use intervals to track down melody notes, and expect plenty of trial and error along the way. Fretwork's free Ear Trainer is built to drill exactly these skills.",
   ],
   sections: [

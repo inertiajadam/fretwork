@@ -10,7 +10,7 @@ const guide = {
   updated: "2026-08-10",
   readMins: 7,
   intro: [
-    "Most guitarists never learn the notes on their neck, and it quietly limits everything they play. The fretboard looks like a grid of identical dots, so it is tempting to guess, or to lean on shapes and hope. The good news is that you do not need a photographic memory. You need a handful of small patterns and a few minutes a day.",
+    "You memorize the guitar fretboard not by drilling all seventy-two notes, but by learning a handful of small patterns: the seven natural notes, the low E and A strings as anchors, octave shapes, and the fret markers. You do not need a photographic memory. Most guitarists never learn the notes on their neck, and it quietly limits everything they play, but a few focused minutes a day is all it really takes.",
     "This guide walks through a plain, repeatable method for learning the note names on the neck, and points you to Fretwork's free Fretboard Explorer so you can see each pattern as you learn it.",
   ],
   sections: [
